@@ -19,26 +19,28 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Debug.Log("Numpad 1 pressed");
-            _mover.TryMove(facing);
+            Debug.Log("Alpha 1 pressed: TryForward()");
+            _mover.TryForward();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Debug.Log("Numpad 2 pressed");
+            Debug.Log("Alpha 2 pressed: ChangeFacing()");
             _mover.ChangeFacing();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            Debug.Log("Numpad 3 pressed");
-            _mover.TryJump(facing);
+            Debug.Log("Alpha 3 pressed: TryJumpUpThenForward(3,1)");
+            _mover.TryJumpUpThenForward(3, 1);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            Debug.Log("Numpad 4 pressed");
+            Debug.Log("Alpha 4 pressed: TryJumpArc(diagonal 2,2)");
+            _mover.TryJumpArc(new Vector2Int(2, 2), 0.5f);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            Debug.Log("Numpad 5 pressed");
+            Debug.Log("Alpha 5 pressed: TryForward()");
+            _mover.TryForward();
         }
     }
 }
