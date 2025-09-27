@@ -1,4 +1,0 @@
-repository "OnamataPuzzle/OnamataPuzzle@435000@cloud"
-  path "/"
-    br "/main"
-    co "/main"

@@ -97,5 +97,5 @@ fmod_editor.log
 .vsconfig
 
 # Plastic SCM
-.plastic/
+.plastic/*
 .plastic
