@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3250950978306940350}
   - component: {fileID: 8049431937351036}
   - component: {fileID: 6437385171549654330}
+  - component: {fileID: 1955261223689255067}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -51,6 +52,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   facing: {x: 1, y: 0}
+  forwardDistance: 1
+  jumpHeight: 2
+  jumpDistance: 3
 --- !u!114 &8435964990629369730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,10 +70,6 @@ MonoBehaviour:
   grid: {fileID: 0}
   collisionTilemap: {fileID: 0}
   stepMoveTime: 0.12
-  allowDiagonal: 0
-  moveDistance: 1
-  jumpHeight: 2
-  jumpDistance: 1
 --- !u!61 &6793178354041549487
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -162,8 +162,8 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 1815555483, guid: 0ce6c8467cfdf764fb86c9d503af08c4, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: -5929115312078742046, guid: 948cc337ed0e6f94189c216bdcebf862, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -225,4 +225,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07aac4539f6dee74cb15529caceee69a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Explosion
-  tilemap: {fileID: 0}
+--- !u!95 &1955261223689255067
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8340654732728158933}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7649c811375ae66499fadcbda5587a9e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
