@@ -1,5 +1,6 @@
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -19,4 +20,10 @@ public class Reset : MonoBehaviour
         Debug.Log("Restarting Level");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void Test()
+    {
+        Debug.Log("Button clicked!");
+    }
+
 }
