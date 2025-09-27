@@ -16,7 +16,7 @@ public class GridMover : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField, Min(0f)] private float stepMoveTime = 0.12f; // seconds per tile
-    [SerializeField] private bool allowDiagonal = false;
+    [SerializeField] private bool allowDiagonal = true;
     [SerializeField] private int moveDistance = 1;
     [SerializeField] private int jumpHeight = 2;
     [SerializeField] private int jumpDistance = 1;
@@ -115,7 +115,7 @@ public class GridMover : MonoBehaviour
         if (delta == Vector2Int.zero) return false;
         if (!HasGroundBelow()) return false;
 
-        List<Vector2Int> steps = BuildChebyshevPath(delta);
+        List<Vector2Int> steps = BuildFacingArcPath(delta);
         StartCoroutine(StepSequence(steps, Mathf.Max(0f, arcHeight), MovementType.JumpOrArc));
         return true;
     }
@@ -131,6 +131,55 @@ public class GridMover : MonoBehaviour
         for (int i = 0; i < diag; i++) steps.Add(new Vector2Int(sx, sy));
         for (int i = 0; i < ax - diag; i++) steps.Add(new Vector2Int(sx, 0));
         for (int i = 0; i < ay - diag; i++) steps.Add(new Vector2Int(0, sy));
+        return steps;
+    }
+
+    // Build an arc that goes diagonally up in the facing (assumed horizontal) direction,
+    // then diagonally down, attempting to end exactly at delta.
+    private List<Vector2Int> BuildFacingArcPath(Vector2Int delta)
+    {
+        // If facing is vertical, fallback to the original path builder to avoid ambiguous arcs
+        if (_pc != null && Mathf.Abs(_pc.facing.y) == 1)
+        {
+            return BuildChebyshevPath(delta);
+        }
+
+        int total = Mathf.Abs(delta.x);
+        int sx = Math.Sign(delta.x != 0 ? delta.x : (_pc != null ? _pc.facing.x : 1));
+        if (total == 0)
+        {
+            // No horizontal distance; fallback to original behavior
+            return BuildChebyshevPath(delta);
+        }
+
+        int desiredDy = delta.y;
+        // First half up-diagonals then down-diagonals
+        int n1 = (total + desiredDy) / 2; // may clamp below
+        if (n1 < 0) n1 = 0;
+        if (n1 > total) n1 = total;
+        int n2 = total - n1;
+
+        int resY = n1 - n2; // net vertical from diagonal portions
+        int resX = sx * total; // net horizontal from diagonal portions
+
+        List<Vector2Int> steps = new List<Vector2Int>(total + 2);
+        for (int i = 0; i < n1; i++) steps.Add(new Vector2Int(sx, 1));
+        for (int i = 0; i < n2; i++) steps.Add(new Vector2Int(sx, -1));
+
+        // Correct any remainder to exactly match delta
+        int remY = desiredDy - resY;
+        int remX = delta.x - resX;
+        if (remY != 0)
+        {
+            int sy = Math.Sign(remY);
+            for (int i = 0; i < Mathf.Abs(remY); i++) steps.Add(new Vector2Int(0, sy));
+        }
+        if (remX != 0)
+        {
+            int sxx = Math.Sign(remX);
+            for (int i = 0; i < Mathf.Abs(remX); i++) steps.Add(new Vector2Int(sxx, 0));
+        }
+
         return steps;
     }
 
@@ -211,7 +260,7 @@ public class GridMover : MonoBehaviour
             while (t < 1f)
             {
                 t += Time.deltaTime / stepMoveTime;
-                float eased = Mathf.SmoothStep(0f, 1f, t);
+                float eased = Mathf.Clamp01(t); // linear interpolation for constant speed across steps
                 Vector3 pos = Vector3.Lerp(start, end, eased);
                 if (arcHeight > 0f)
                 {
