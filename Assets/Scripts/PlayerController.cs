@@ -7,6 +7,10 @@ public class PlayerController : MonoBehaviour
 
     public Vector2Int facing = Vector2Int.right;
 
+    [SerializeField] private int forwardDistance = 1;
+    [SerializeField] private int jumpHeight = 2;
+    [SerializeField] private int jumpDistance = 3;
+    
     void Awake()
     {
         _mover = GetComponent<GridMover>();
@@ -22,7 +26,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("Alpha 1 pressed: TryForward(2)");
-            _mover.TryForward(2);
+            _mover.TryForward(forwardDistance);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -32,12 +36,12 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Debug.Log("Alpha 3 pressed: TryJumpUpThenForward(3)");
-            _mover.TryJumpUpThenForward(3);
+            _mover.TryJumpUpThenForward(jumpHeight);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             Debug.Log("Alpha 4 pressed: TryJumpForward(4)");
-            _mover.TryJumpForward(7);
+            _mover.TryJumpForward(jumpDistance);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {

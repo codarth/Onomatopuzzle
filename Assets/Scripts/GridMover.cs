@@ -32,10 +32,6 @@ public class GridMover : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField, Min(0f)] private float stepMoveTime = 0.12f; // seconds per tile
-    [SerializeField] private bool allowDiagonal = true;
-    [SerializeField] private int moveDistance = 1;
-    [SerializeField] private int jumpHeight = 2;
-    [SerializeField] private int jumpDistance = 1;
     private PlayerController _pc;
 
     private bool _isMoving;
