@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class PlayerOverlap : MonoBehaviour
@@ -27,6 +28,24 @@ public class PlayerOverlap : MonoBehaviour
         if (tile == winningTile)
         {
             Debug.Log("Player overlapped the Winning Tile!");
+            // load the next level
+
+            LoadNextLevel();
+        }
+    }
+
+    private void LoadNextLevel()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = currentSceneIndex + 1;
+        
+        if (currentSceneIndex < SceneManager.sceneCountInBuildSettings - 1)
+        {
+            SceneManager.LoadScene(nextSceneIndex);
+        }
+        else
+        {
+            Debug.Log("No more levels to load. You reached the end of the game!");
         }
     }
 }
