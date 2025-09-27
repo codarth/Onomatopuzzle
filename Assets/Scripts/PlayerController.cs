@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Debug.Log("Alpha 3 pressed: TryJumpUpThenForward(3,1)");
-            _mover.TryJumpUpThenForward(3, 1);
+            _mover.TryJumpUpThenForward();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
