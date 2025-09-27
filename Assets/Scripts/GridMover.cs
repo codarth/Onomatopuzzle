@@ -264,7 +264,7 @@ public class GridMover : MonoBehaviour
                 Vector3 pos = Vector3.Lerp(start, end, eased);
                 if (arcHeight > 0f)
                 {
-                    float arc = 4f * arcHeight * eased * (1f - eased); // simple parabola
+                    float arc = 3f * arcHeight * eased * (1f - eased); // simple parabola
                     pos += Vector3.up * arc;
                 }
                 transform.position = pos;
