@@ -66,6 +66,7 @@ MonoBehaviour:
   collisionTilemap: {fileID: 0}
   stepMoveTime: 0.12
   allowDiagonal: 0
+  speed: 3
 --- !u!61 &6793178354041549487
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -110,7 +111,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.95, y: 0.95}
   m_EdgeRadius: 0
 --- !u!212 &3983859039792023839
 SpriteRenderer:
@@ -209,5 +210,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906b7ea0b79fb8c45b1e7c0111be5da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerOverlap
-  tilemap: {fileID: 0}
-  winningTile: {fileID: 0}
+  winningTile: {fileID: 11400000, guid: edc7c0d2a8954a14dbb53094884277a4, type: 2}

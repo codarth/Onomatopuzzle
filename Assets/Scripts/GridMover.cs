@@ -8,6 +8,8 @@ using UnityEngine.Tilemaps;
 
 public class GridMover : MonoBehaviour
 {
+    public enum MovementType { Forward, JumpOrArc }
+
     [Header("References")]
     [SerializeField] private GridLayout grid;          // Drag the Grid here
     [SerializeField] private Tilemap collisionTilemap; // Optional: walls / blocked cells
@@ -96,12 +98,13 @@ public class GridMover : MonoBehaviour
         if (_isMoving) return false;
         if (tiles <= 0) return false;
         if (dir == Vector2Int.zero) return false;
+        if (!HasGroundBelow()) return false;
 
         // Build steps list
         List<Vector2Int> steps = new List<Vector2Int>();
         for (int i = 0; i < tiles; i++) steps.Add(new Vector2Int(Mathf.Clamp(dir.x, -1, 1), Mathf.Clamp(dir.y, -1, 1)));
 
-        StartCoroutine(StepSequence(steps, 0f));
+        StartCoroutine(StepSequence(steps, 0f, MovementType.Forward));
         return true;
     }
 
@@ -110,13 +113,14 @@ public class GridMover : MonoBehaviour
     {
         if (_isMoving) return false;
         if (up <= 0 && forward <= 0) return false;
+        if (!HasGroundBelow()) return false;
 
         List<Vector2Int> steps = new List<Vector2Int>();
         for (int i = 0; i < up; i++) steps.Add(Vector2Int.up);
         Vector2Int f = _pc != null ? _pc.facing : Vector2Int.right;
         for (int i = 0; i < forward; i++) steps.Add(new Vector2Int(Mathf.Clamp(f.x, -1, 1), Mathf.Clamp(f.y, -1, 1)));
 
-        StartCoroutine(StepSequence(steps, 0f));
+        StartCoroutine(StepSequence(steps, 0f, MovementType.JumpOrArc));
         return true;
     }
 
@@ -125,9 +129,10 @@ public class GridMover : MonoBehaviour
     {
         if (_isMoving) return false;
         if (delta == Vector2Int.zero) return false;
+        if (!HasGroundBelow()) return false;
 
         List<Vector2Int> steps = BuildChebyshevPath(delta);
-        StartCoroutine(StepSequence(steps, Mathf.Max(0f, arcHeight)));
+        StartCoroutine(StepSequence(steps, Mathf.Max(0f, arcHeight), MovementType.JumpOrArc));
         return true;
     }
 
@@ -166,6 +171,18 @@ public class GridMover : MonoBehaviour
         // Treat any tile present in the collisionTilemap as blocked.
         return (!collisionTilemap.IsUnityNull() && collisionTilemap.HasTile(cell));
     }
+    
+    private bool HasGroundBelow()
+    {
+        return HasGroundBelowAt(CurrentCell);
+    }
+
+    private bool HasGroundBelowAt(Vector3Int cell)
+    {
+        Vector3Int belowCell = cell + Vector3Int.down;
+        return IsBlocked(belowCell); // assuming solid tiles = ground
+    }
+
 
     Vector3 CellCenterWorld(Vector3Int cell)
     {
@@ -228,31 +245,82 @@ public class GridMover : MonoBehaviour
         OnCellChanged?.Invoke(to);
     }
 
-    private IEnumerator StepSequence(List<Vector2Int> steps, float arcHeight)
+    private IEnumerator StepSequence(List<Vector2Int> steps, float arcHeight, MovementType moveType)
     {
         _isMoving = true;
         Vector3Int cell = CurrentCell;
 
-        foreach (var step in steps)
+        int i = 0;
+        while (i < steps.Count)
         {
             // Normalize step to unit grid step
+            Vector2Int step = steps[i];
             Vector2Int unit = new Vector2Int(Mathf.Clamp(step.x, -1, 1), Mathf.Clamp(step.y, -1, 1));
             if (unit == Vector2Int.zero)
             {
+                i++;
                 continue;
             }
 
+            // If starting in air during a Forward sequence, fall first
+            if (moveType == MovementType.Forward && !HasGroundBelowAt(cell))
+            {
+                yield return FallUntilGrounded();
+                cell = CurrentCell;
+                continue; // re-evaluate same step after landing
+            }
+
             Vector3Int next = cell + new Vector3Int(unit.x, unit.y, 0);
+
+            // Standard collision checks
             if (!CanStep(cell, unit))
             {
                 break; // blocked: stop immediately
             }
 
-            // Perform the tween for this single step
-            yield return MoveOneStep(cell, next, arcHeight);
-            cell = next;
+            if (moveType == MovementType.Forward)
+            {
+                // Perform the tween for this single step without requiring ground under the next cell
+                yield return MoveOneStep(cell, next, 0f);
+                cell = next;
+
+                // After moving, if no ground, fall immediately
+                if (!HasGroundBelowAt(cell))
+                {
+                    yield return FallUntilGrounded();
+                    cell = CurrentCell;
+                }
+            }
+            else // JumpOrArc
+            {
+                // Ignore ground checks during jump/arc
+                yield return MoveOneStep(cell, next, arcHeight);
+                cell = next;
+            }
+
+            i++;
+        }
+
+        // After jump/arc sequence completes, if we ended midair, fall
+        if (moveType == MovementType.JumpOrArc && !HasGroundBelowAt(cell))
+        {
+            yield return FallUntilGrounded();
         }
 
         _isMoving = false;
+    }
+
+    private IEnumerator FallUntilGrounded()
+    {
+        Vector3Int cell = CurrentCell;
+        // Fall one cell at a time until grounded
+        while (!HasGroundBelowAt(cell))
+        {
+            Vector3Int down = cell + Vector3Int.down;
+            // Safety: if something marked as blocked below, stop
+            if (IsBlocked(down)) break;
+            yield return MoveOneStep(cell, down, 0f);
+            cell = down;
+        }
     }
 }
