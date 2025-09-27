@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -23,7 +25,7 @@ public class GridMover : MonoBehaviour
 
     void Reset()
     {
-        grid = FindObjectOfType<Grid>(); // convenience
+        grid = FindObjectsByType<Grid>(FindObjectsSortMode.InstanceID)[0]; // convenience
     }
 
     void Start()
@@ -99,8 +101,7 @@ public class GridMover : MonoBehaviour
     bool IsBlocked(Vector3Int cell)
     {
         // Treat any tile present in the collisionTilemap as blocked.
-        if (collisionTilemap != null && collisionTilemap.HasTile(cell)) return true;
-        return false;
+        return (!collisionTilemap.IsUnityNull() && collisionTilemap.HasTile(cell));
     }
 
     Vector3 CellCenterWorld(Vector3Int cell)
