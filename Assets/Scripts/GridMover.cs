@@ -17,7 +17,9 @@ public class GridMover : MonoBehaviour
     [Header("Movement")]
     [SerializeField, Min(0f)] private float stepMoveTime = 0.12f; // seconds per tile
     [SerializeField] private bool allowDiagonal = false;
-    [SerializeField] private int speed = 1;
+    [SerializeField] private int moveDistance = 1;
+    [SerializeField] private int jumpHeight = 2;
+    [SerializeField] private int jumpDistance = 1;
     private PlayerController _pc;
 
     private bool _isMoving;
@@ -83,13 +85,13 @@ public class GridMover : MonoBehaviour
     public bool TryJump(Vector2Int facingDirection)
     {
         // Preserve old API: ignore argument magnitude, use current facing and fixed distances
-        return TryJumpUpThenForward(3, 1);
+        return TryJumpUpThenForward(jumpHeight, jumpDistance);
     }
 
     /// <summary>Move forward a number of tiles along the given direction, step-by-step with collision checks.</summary>
     public bool TryForward()
     {
-        return TryForward(_pc != null ? _pc.facing : Vector2Int.right, speed);
+        return TryForward(_pc != null ? _pc.facing : Vector2Int.right, moveDistance);
     }
 
     /// <summary>Move forward a number of tiles along an explicit direction, step-by-step with collision checks.</summary>
