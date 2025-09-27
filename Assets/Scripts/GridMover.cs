@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -15,9 +14,9 @@ public class GridMover : MonoBehaviour
     [SerializeField, Min(0f)] private float stepMoveTime = 0.12f; // seconds per tile
     [SerializeField] private bool allowDiagonal = false;
 
-    private PlayerController pc;
-    
-    public bool IsMoving { get; private set; }
+    private PlayerController _pc;
+
+    private bool _isMoving;
     public Vector3Int CurrentCell => grid.WorldToCell(transform.position);
 
     /// <summary>Raised after the object arrives on a new cell.</summary>
@@ -31,18 +30,18 @@ public class GridMover : MonoBehaviour
     void Start()
     {
         SnapToGrid();
-        pc = GetComponent<PlayerController>();
+        _pc = GetComponent<PlayerController>();
     }
 
     public void ChangeFacing()
     {
-        pc.facing = pc.facing == Vector2Int.right ? Vector2Int.left : Vector2Int.right;
+        _pc.facing = _pc.facing == Vector2Int.right ? Vector2Int.left : Vector2Int.right;
     }
 
     /// <summary>Attempts to move by one cell in the given direction (grid units).</summary>
     public bool TryMove(Vector2Int dir)
     {
-        if (IsMoving) return false;
+        if (_isMoving) return false;
         if (dir == Vector2Int.zero) return false;
         if (!allowDiagonal && Mathf.Abs(dir.x) == 1 && Mathf.Abs(dir.y) == 1) return false;
 
@@ -57,7 +56,7 @@ public class GridMover : MonoBehaviour
     public bool TryJump(Vector2Int facingDirection
     )
     {
-        if (IsMoving) return false;
+        if (_isMoving) return false;
         
         Vector3Int upTarget = CurrentCell + new Vector3Int(0, 3, 0); // 3 tiles up
         Vector3Int finalTarget = upTarget + new Vector3Int(facingDirection.x, facingDirection.y, 0); // then 1 tile in facing direction
@@ -71,7 +70,7 @@ public class GridMover : MonoBehaviour
     
     IEnumerator JumpSequence(Vector3Int upTarget, Vector3Int finalTarget)
     {
-        IsMoving = true;
+        _isMoving = true;
         
         // First move: 3 tiles up
         yield return StartCoroutine(MoveToCell(upTarget));
@@ -79,13 +78,13 @@ public class GridMover : MonoBehaviour
         // Second move: 1 tile right
         yield return StartCoroutine(MoveToCell(finalTarget));
         
-        IsMoving = false;
+        _isMoving = false;
     }
 
 
 
     /// <summary>Immediately snaps to the center of the current cell.</summary>
-    public void SnapToGrid()
+    private void SnapToGrid()
     {
         Vector3Int cell = grid.WorldToCell(transform.position);
         transform.position = CellCenterWorld(cell);
@@ -107,12 +106,12 @@ public class GridMover : MonoBehaviour
     Vector3 CellCenterWorld(Vector3Int cell)
     {
         // Center of the cell using Grid cell size
-        return grid.CellToWorld(cell) + (Vector3)grid.cellSize / 2f;
+        return grid.CellToWorld(cell) + grid.cellSize / 2f;
     }
 
     IEnumerator MoveToCell(Vector3Int targetCell)
     {
-        IsMoving = true;
+        _isMoving = true;
 
         Vector3 start = transform.position;
         Vector3 end = CellCenterWorld(targetCell);
@@ -134,7 +133,7 @@ public class GridMover : MonoBehaviour
             transform.position = end;
         }
 
-        IsMoving = false;
+        _isMoving = false;
         OnCellChanged?.Invoke(targetCell);
     }
     
