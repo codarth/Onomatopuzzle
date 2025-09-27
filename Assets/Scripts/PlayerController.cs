@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("Numpad 1 pressed");
+            MoveForward.StartMoveRightByOneTile(this, transform);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
