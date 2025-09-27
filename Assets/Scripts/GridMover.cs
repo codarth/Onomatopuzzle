@@ -71,9 +71,9 @@ public class GridMover : MonoBehaviour
     }
 
     /// <summary>Move forward a number of tiles along the given direction, step-by-step with collision checks.</summary>
-    public bool TryForward()
+    public void TryForward()
     {
-        return TryForward(_pc != null ? _pc.facing : Vector2Int.right, moveDistance);
+        TryForward(_pc != null ? _pc.facing : Vector2Int.right, moveDistance);
     }
 
     /// <summary>Move forward a number of tiles along an explicit direction, step-by-step with collision checks.</summary>
@@ -93,11 +93,11 @@ public class GridMover : MonoBehaviour
     }
 
     /// <summary>Jump up by 'up' tiles, then move forward by 'forward' tiles in current facing.</summary>
-    public bool TryJumpUpThenForward()
+    public void TryJumpUpThenForward()
     {
-        if (_isMoving) return false;
-        if (jumpHeight <= 0 && jumpDistance <= 0) return false;
-        if (!HasGroundBelow()) return false;
+        //if (_isMoving) return false;
+        //if (jumpHeight <= 0 && jumpDistance <= 0) return false;
+        //if (!HasGroundBelow()) return false;
 
         List<Vector2Int> steps = new List<Vector2Int>();
         for (int i = 0; i < jumpHeight; i++) steps.Add(Vector2Int.up);
@@ -105,19 +105,19 @@ public class GridMover : MonoBehaviour
         for (int i = 0; i < jumpDistance; i++) steps.Add(new Vector2Int(Mathf.Clamp(f.x, -1, 1), Mathf.Clamp(f.y, -1, 1)));
 
         StartCoroutine(StepSequence(steps, 0f, MovementType.JumpOrArc));
-        return true;
+        //return true;
     }
 
     /// <summary>Jump in an arc following the delta vector step-by-step. arcHeight affects tween only.</summary>
-    public bool TryJumpArc(Vector2Int delta, float arcHeight)
+    public void TryJumpArc(Vector2Int delta, float arcHeight)
     {
-        if (_isMoving) return false;
-        if (delta == Vector2Int.zero) return false;
-        if (!HasGroundBelow()) return false;
+        //if (_isMoving) return false;
+        //if (delta == Vector2Int.zero) return false;
+        //if (!HasGroundBelow()) return false;
 
         List<Vector2Int> steps = BuildFacingArcPath(delta);
         StartCoroutine(StepSequence(steps, Mathf.Max(0f, arcHeight), MovementType.JumpOrArc));
-        return true;
+        //return true;
     }
 
     private List<Vector2Int> BuildChebyshevPath(Vector2Int delta)
