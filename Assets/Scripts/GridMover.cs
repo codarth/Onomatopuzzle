@@ -17,7 +17,9 @@ public class GridMover : MonoBehaviour
     [Header("Movement")]
     [SerializeField, Min(0f)] private float stepMoveTime = 0.12f; // seconds per tile
     [SerializeField] private bool allowDiagonal = false;
-    [SerializeField] private int speed = 1;
+    [SerializeField] private int moveDistance = 1;
+    [SerializeField] private int jumpHeight = 2;
+    [SerializeField] private int jumpDistance = 1;
     private PlayerController _pc;
 
     private bool _isMoving;
@@ -68,28 +70,10 @@ public class GridMover : MonoBehaviour
         _pc.facing = _pc.facing == Vector2Int.right ? Vector2Int.left : Vector2Int.right;
     }
 
-    /// <summary>Attempts to move by one cell in the given direction (grid units). Backward compatible wrapper.</summary>
-    public bool TryMove(Vector2Int dir)
-    {
-        if (_isMoving) return false;
-        if (dir == Vector2Int.zero) return false;
-        if (!allowDiagonal && Mathf.Abs(dir.x) == 1 && Mathf.Abs(dir.y) == 1) return false;
-
-        // Single-step forward in provided direction
-        return TryForward(dir, 1);
-    }
-
-    /// <summary>Attempts to jump 3 tiles up then 1 tile in facing direction. Backward compatible wrapper.</summary>
-    public bool TryJump(Vector2Int facingDirection)
-    {
-        // Preserve old API: ignore argument magnitude, use current facing and fixed distances
-        return TryJumpUpThenForward(3, 1);
-    }
-
     /// <summary>Move forward a number of tiles along the given direction, step-by-step with collision checks.</summary>
     public bool TryForward()
     {
-        return TryForward(_pc != null ? _pc.facing : Vector2Int.right, speed);
+        return TryForward(_pc != null ? _pc.facing : Vector2Int.right, moveDistance);
     }
 
     /// <summary>Move forward a number of tiles along an explicit direction, step-by-step with collision checks.</summary>
@@ -109,16 +93,16 @@ public class GridMover : MonoBehaviour
     }
 
     /// <summary>Jump up by 'up' tiles, then move forward by 'forward' tiles in current facing.</summary>
-    public bool TryJumpUpThenForward(int up, int forward)
+    public bool TryJumpUpThenForward()
     {
         if (_isMoving) return false;
-        if (up <= 0 && forward <= 0) return false;
+        if (jumpHeight <= 0 && jumpDistance <= 0) return false;
         if (!HasGroundBelow()) return false;
 
         List<Vector2Int> steps = new List<Vector2Int>();
-        for (int i = 0; i < up; i++) steps.Add(Vector2Int.up);
+        for (int i = 0; i < jumpHeight; i++) steps.Add(Vector2Int.up);
         Vector2Int f = _pc != null ? _pc.facing : Vector2Int.right;
-        for (int i = 0; i < forward; i++) steps.Add(new Vector2Int(Mathf.Clamp(f.x, -1, 1), Mathf.Clamp(f.y, -1, 1)));
+        for (int i = 0; i < jumpDistance; i++) steps.Add(new Vector2Int(Mathf.Clamp(f.x, -1, 1), Mathf.Clamp(f.y, -1, 1)));
 
         StartCoroutine(StepSequence(steps, 0f, MovementType.JumpOrArc));
         return true;

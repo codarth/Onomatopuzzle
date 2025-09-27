@@ -1,11 +1,13 @@
+using TileScripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class PlayerOverlap : MonoBehaviour
 {
-    private Tilemap tilemap;                
-    public WinningTile winningTile;        
+    private Tilemap tilemap;
+    public WinningTile winningTile;
+    public DamageTile damageTile;
 
     private void Start()
     {
@@ -27,10 +29,13 @@ public class PlayerOverlap : MonoBehaviour
 
         if (tile == winningTile)
         {
-            Debug.Log("Player overlapped the Winning Tile!");
-            // load the next level
-
+            //Debug.Log("Player overlapped the Winning Tile!");
             LoadNextLevel();
+        }
+        else if (tile == damageTile)
+        {
+            // Debug.Log("Player overlapped the Damage Tile!");
+            DamagePlayer();
         }
     }
 
@@ -38,7 +43,7 @@ public class PlayerOverlap : MonoBehaviour
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
-        
+
         if (currentSceneIndex < SceneManager.sceneCountInBuildSettings - 1)
         {
             SceneManager.LoadScene(nextSceneIndex);
@@ -47,5 +52,11 @@ public class PlayerOverlap : MonoBehaviour
         {
             Debug.Log("No more levels to load. You reached the end of the game!");
         }
+    }
+    
+    private void DamagePlayer()
+    {
+        // Debug.Log("Player takes damage! Implement health reduction here.");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
