@@ -175,7 +175,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a31de699be1b2f142a09612abb749b14
+      spriteID: 35d38e1f48b85cb4f9eee702df60c1ed
       internalID: -2045150464
       vertices: []
       indices: 
@@ -197,7 +197,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 735184d6e8c6a8c4e813ed96740ab16b
+      spriteID: fab3ee701accec44e801edefac5cfcfd
       internalID: -625110780
       vertices: []
       indices: 
@@ -219,7 +219,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 190021e6bd24bf947acf44022671e935
+      spriteID: 53fcf5b8e69bdd04c96237ba219580ba
       internalID: 1879804727
       vertices: []
       indices: 
@@ -241,7 +241,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 272beb27b45fe4045a4176589d70ca85
+      spriteID: 38a49930391b3bc4982c62c9035acaac
       internalID: -1086304175
       vertices: []
       indices: 
@@ -263,7 +263,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aaf47954252c2c14b8bd9dc3ac0873c6
+      spriteID: 0b882ed4fbe6a0d4ab1aa78c1f35e4c8
       internalID: 1893088309
       vertices: []
       indices: 
@@ -285,7 +285,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7d286c61d7814d54aa8e8fee1757772e
+      spriteID: ac158b6f87f22da4cbcfcdd09669d2ce
       internalID: 987923797
       vertices: []
       indices: 
@@ -293,6 +293,50 @@ TextureImporter:
       weights: []
     - serializedVersion: 2
       name: Tileset-Template_8
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f82b4d886d100e4eaddfb6af5b2d332
+      internalID: 1815555483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tileset-Template_9
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08cf20d58a963c44bb5642fafc8ced48
+      internalID: -2090242879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tileset-Template_10
       rect:
         serializedVersion: 2
         x: 128
@@ -307,14 +351,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 940f4ab1f85067a4880b058d92a5518b
-      internalID: 1815555483
+      spriteID: f4a608bcd11499e4d89a7ebcb8c50902
+      internalID: 736884785
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Template_9
+      name: Tileset-Template_11
       rect:
         serializedVersion: 2
         x: 32
@@ -329,14 +373,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dd6c2df12acb9e044b66fe7ce2ca6b26
-      internalID: -2090242879
+      spriteID: 44209a1b0728f5442af2adf9e4f82c1f
+      internalID: -1257599033
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Template_10
+      name: Tileset-Template_12
       rect:
         serializedVersion: 2
         x: 48
@@ -351,14 +395,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b36c52345bc18be44a9eb613f93b5406
-      internalID: 736884785
+      spriteID: 226b12b7d7008404aa2469c687123ab4
+      internalID: 515933836
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Template_11
+      name: Tileset-Template_13
       rect:
         serializedVersion: 2
         x: 64
@@ -373,14 +417,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 93985e9b1e76d2c4db600c8523adb63e
-      internalID: -1257599033
+      spriteID: 21c5d9b1399b39744b77c5c3774a75a1
+      internalID: -1238640166
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Template_12
+      name: Tileset-Template_14
       rect:
         serializedVersion: 2
         x: 80
@@ -395,14 +439,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 61ee2df1282c15847a8b5c543c5d194b
-      internalID: 515933836
+      spriteID: 1da9f756a0fca5a41a433a9ee5746da2
+      internalID: 150700407
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Template_13
+      name: Tileset-Template_15
       rect:
         serializedVersion: 2
         x: 96
@@ -417,14 +461,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 578185d8417a6df47b0617054c19cd1a
-      internalID: -1238640166
+      spriteID: d6a168d06397c4849aba9f522eb499d3
+      internalID: -321948752
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Template_14
+      name: Tileset-Template_16
       rect:
         serializedVersion: 2
         x: 112
@@ -439,8 +483,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14fcfceb8ac6c5041abc80817716a9e1
-      internalID: 150700407
+      spriteID: 08cd84830190d5d43a9e2462319be4e1
+      internalID: 1364867780
       vertices: []
       indices: 
       edges: []
@@ -468,6 +512,8 @@ TextureImporter:
       Tileset-Template_12: 515933836
       Tileset-Template_13: -1238640166
       Tileset-Template_14: 150700407
+      Tileset-Template_15: -321948752
+      Tileset-Template_16: 1364867780
       Tileset-Template_2: -2045150464
       Tileset-Template_3: -625110780
       Tileset-Template_4: 1879804727

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -22,6 +23,31 @@ public class GridMover : MonoBehaviour
     /// <summary>Raised after the object arrives on a new cell.</summary>
     public event Action<Vector3Int> OnCellChanged;
 
+    void Awake()
+    {
+        // Find grid if not assigned
+        if (!grid)
+        {
+            grid = FindObjectOfType<Grid>();
+            if (!grid)
+            {
+                Debug.LogWarning("GridMover: No Grid found in scene!");
+            }
+        }
+        
+        // Find collision tilemap if not assigned
+        if (collisionTilemap) return;
+        
+        // Try to find a tilemap with "collision" in the name (case insensitive)
+        Tilemap[] tilemaps = FindObjectsByType<Tilemap>(FindObjectsSortMode.InstanceID);
+        Debug.Log(tilemaps.Length);
+
+        collisionTilemap = FindObjectsByType<Tilemap>(FindObjectsSortMode.InstanceID).First(); 
+        
+        // If no collision tilemap found by name, could optionally use the first tilemap
+        // or leave it null for no collision checking
+    }
+    
     void Reset()
     {
         grid = FindObjectsByType<Grid>(FindObjectsSortMode.InstanceID)[0]; // convenience
