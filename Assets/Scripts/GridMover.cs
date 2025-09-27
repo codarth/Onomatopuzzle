@@ -99,6 +99,8 @@ public class GridMover : MonoBehaviour
 
     bool IsBlocked(Vector3Int cell)
     {
+        Debug.Log(collisionTilemap);
+        Debug.Log(collisionTilemap.HasTile(cell));
         // Treat any tile present in the collisionTilemap as blocked.
         return (!collisionTilemap.IsUnityNull() && collisionTilemap.HasTile(cell));
     }
