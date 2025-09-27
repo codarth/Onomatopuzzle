@@ -51,6 +51,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   facing: {x: 1, y: 0}
+  forwardDistance: 1
+  jumpHeight: 2
+  jumpDistance: 3
 --- !u!114 &8435964990629369730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,10 +69,6 @@ MonoBehaviour:
   grid: {fileID: 0}
   collisionTilemap: {fileID: 0}
   stepMoveTime: 0.12
-  allowDiagonal: 0
-  moveDistance: 1
-  jumpHeight: 2
-  jumpDistance: 1
 --- !u!61 &6793178354041549487
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -225,4 +224,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07aac4539f6dee74cb15529caceee69a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Explosion
-  tilemap: {fileID: 0}
+  glorpChance: 0.35

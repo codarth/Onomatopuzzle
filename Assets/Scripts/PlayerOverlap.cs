@@ -5,36 +5,47 @@ using UnityEngine.Tilemaps;
 
 public class PlayerOverlap : MonoBehaviour
 {
-    private Tilemap tilemap;
-    private WinningTile winningTile;
-    private DamageTile damageTile;
+    private Tilemap _tilemap;
+    private WinningTile _winningTile;
+    private DamageTile _damageTile;
+    private GlorpTile _glorpTile;
 
     private void Start()
     {
-        tilemap = FindFirstObjectByType<Tilemap>();
-        if (tilemap == null) Debug.Log("tilemap not set in PlayerOverlap");
+        _tilemap = FindFirstObjectByType<Tilemap>();
+        if (_tilemap == null) Debug.Log("tilemap not set in PlayerOverlap");
         // get winningTile by path
 
-        winningTile = Resources.Load<WinningTile>("Tiles/WinningTile");
-        if (winningTile == null) Debug.Log("winningTile not found in PlayerOverlap");
-        damageTile = Resources.Load<DamageTile>("Tiles/DamageTile");
-        if (damageTile == null) Debug.Log("damageTile not found in PlayerOverlap");
+        _winningTile = Resources.Load<WinningTile>("Tiles/WinningTile");
+        if (_winningTile == null) Debug.Log("winningTile not found in PlayerOverlap");
+        _damageTile = Resources.Load<DamageTile>("Tiles/DamageTile");
+        if (_damageTile == null) Debug.Log("damageTile not found in PlayerOverlap");
+        _glorpTile = Resources.Load<GlorpTile>("Tiles/GlorpTile");
+        if (_glorpTile == null) Debug.Log("glorpTile not found in PlayerOverlap");
     }
 
     private void Update()
         {
-            Vector3Int playerCellPos = tilemap.WorldToCell(transform.position);
-            TileBase tile = tilemap.GetTile(playerCellPos);
+            Vector3Int playerCellPos = _tilemap.WorldToCell(transform.position);
+            TileBase tile = _tilemap.GetTile(playerCellPos);
 
-            if (tile == winningTile)
+            if (tile == _winningTile)
             {
                 //Debug.Log("Player overlapped the Winning Tile!");
                 LoadNextLevel();
             }
-            else if (tile == damageTile)
+            else if (tile == _damageTile)
             {
                 // Debug.Log("Player overlapped the Damage Tile!");
                 DamagePlayer();
+            }
+            else if (_glorpTile)
+            {
+                if (tile == _glorpTile)
+                {
+                    Debug.Log("Player overlapped the Glorp Tile!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    _tilemap.SetTile(_tilemap.WorldToCell(transform.position), null);
+                }
             }
         }
 
