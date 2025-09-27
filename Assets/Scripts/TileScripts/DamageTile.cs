@@ -1,11 +1,10 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 namespace TileScripts
 {
-    [CreateAssetMenu(fileName = "WinningTile", menuName = "Tiles/WinningTile")]
-    public class WinningTile : TileBase
+    [CreateAssetMenu(fileName = "DamageTile", menuName = "Tiles/DamageTile")]
+    public class DamageTile : TileBase
     {
         public Sprite sprite;
 

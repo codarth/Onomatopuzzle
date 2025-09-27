@@ -8,9 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CodyScene.unity
     guid: 5fc3d954013e8ad40aa63521b35e10c5
-  - enabled: 1
-    path: Assets/Scenes/TarekScene.unity
-    guid: 747b27fce8fd30d44b4febaa3364e2bf
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
