@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Grid-based movement component that moves a GameObject across a Tilemap/GridLayout.
+/// Decoupled from any specific controller so it can be reused for players, enemies, or tiles.
+/// Provides forward movement, jump-up-then-forward, jump-forward arc, and turning left/right.
+/// </summary>
 public class GridMover : MonoBehaviour
 {
     public enum MovementType { Forward, JumpOrArc }
@@ -27,26 +30,51 @@ public class GridMover : MonoBehaviour
     }
 
     [Header("References")]
-    [SerializeField] private GridLayout grid;          // Drag the Grid here
-    [SerializeField] private Tilemap collisionTilemap; // Optional: walls / blocked cells
+    [Tooltip("Grid or GridLayout that defines the world-to-cell mapping for movement.")]
+    [SerializeField] private GridLayout grid;
+    [Tooltip("Tilemap used for collision/ground checks. A tile present is treated as blocked/solid.")]
+    [SerializeField] private Tilemap collisionTilemap;
 
-    [Header("Movement")]
-    [SerializeField, Min(0f)] private float stepMoveTime = 0.12f; // seconds per tile
-    private PlayerController _pc;
+    [Header("Movement Settings")]
+    [Tooltip("Seconds to move one tile. Lower is faster. 0 snaps instantly.")]
+    [SerializeField, Min(0f)] private float stepMoveTime = 0.12f;
+    [Tooltip("Current facing direction in grid units. Typically (1,0) or (-1,0).")]
+    [SerializeField] private Vector2Int facing = Vector2Int.right;
 
-    private bool _isMoving;
+    // Properties
+    /// <summary>
+    /// Current facing direction in grid coordinates.
+    /// </summary>
+    public Vector2Int Facing => facing;
+
+    /// <summary>
+    /// True while a movement sequence or step is being executed.
+    /// </summary>
     public bool IsMoving => _isMoving;
+
+    /// <summary>
+    /// The cell the object currently occupies (rounded to cell center).
+    /// </summary>
     public Vector3Int CurrentCell => grid.WorldToCell(transform.position);
 
-    /// <summary>Raised after the object arrives on a new cell.</summary>
+    // Events
+    /// <summary>
+    /// Invoked when the mover enters a new cell. Parameter is the new cell position.
+    /// </summary>
     public event Action<Vector3Int> OnCellChanged;
 
+    // Private state
+    private bool _isMoving;
+
+    /// <summary>
+    /// Unity message. Ensures required references are located if not set via the Inspector.
+    /// </summary>
     void Awake()
     {
         // Find grid if not assigned
         if (!grid)
         {
-            grid = FindObjectOfType<Grid>();
+            grid = FindAnyObjectByType<Grid>();
             if (!grid)
             {
                 Debug.LogWarning("GridMover: No Grid found in scene!");
@@ -54,17 +82,29 @@ public class GridMover : MonoBehaviour
         }
         
         // Find collision tilemap if not assigned
-        if (collisionTilemap) return;
-        
-        // Try to find a tilemap with "collision" in the name (case insensitive)
-        Tilemap[] tilemaps = FindObjectsByType<Tilemap>(FindObjectsSortMode.InstanceID);
-        Debug.Log(tilemaps.Length);
-
-        collisionTilemap = FindObjectsByType<Tilemap>(FindObjectsSortMode.InstanceID).First(); 
-        
-        // If no collision tilemap found by name, could optionally use the first tilemap
-        // or leave it null for no collision checking
+        if (!collisionTilemap)
+        {
+            // Try to find a tilemap with "collision" in the name (case insensitive)
+            Tilemap[] tilemaps = FindObjectsByType<Tilemap>(FindObjectsSortMode.InstanceID);
+            
+            foreach (var tilemap in tilemaps)
+            {
+                if (tilemap.name.ToLower().Contains("collision"))
+                {
+                    collisionTilemap = tilemap;
+                    break;
+                }
+            }
+            
+            // If no collision tilemap found by name, use the first tilemap as fallback
+            if (!collisionTilemap && tilemaps.Length > 0)
+            {
+                collisionTilemap = tilemaps[0];
+                Debug.LogWarning($"GridMover: No 'collision' tilemap found, using '{collisionTilemap.name}' as fallback");
+            }
+        }
     }
+
     
     void Reset()
     {
@@ -74,16 +114,19 @@ public class GridMover : MonoBehaviour
     void Start()
     {
         SnapToGrid();
-        _pc = GetComponent<PlayerController>();
     }
 
     // Original facing flip kept as private for Turn command execution
     private void DoChangeFacing()
     {
-        _pc.facing = _pc.facing == Vector2Int.right ? Vector2Int.left : Vector2Int.right;
+        facing = (facing == Vector2Int.right) ? Vector2Int.left : Vector2Int.right;
     }
 
     // Public wrapper now routes through the sequence system
+    /// <summary>
+    /// Requests a facing change (left/right flip). The command is queued and executed via the movement sequence system.
+    /// </summary>
+    /// <returns>True if the command was accepted (not already moving and on valid ground), otherwise false.</returns>
     public bool ChangeFacing()
     {
         return TryExecuteSequence(new MoveStep[] {
@@ -91,7 +134,11 @@ public class GridMover : MonoBehaviour
         });
     }
 
-    /// <summary>Move forward along current facing by the given distance (default 1).</summary>
+    /// <summary>
+    /// Attempts to move forward along the current facing direction by the specified number of tiles.
+    /// </summary>
+    /// <param name="distance">Number of tiles to move forward. Must be >= 1. Defaults to 1.</param>
+    /// <returns>True if the move sequence was accepted and will run; false if blocked or already moving.</returns>
     public bool TryForward(int distance = 1)
     {
         return TryExecuteSequence(new MoveStep[] {
@@ -99,7 +146,12 @@ public class GridMover : MonoBehaviour
         });
     }
 
-    /// <summary>Jump up by the specified height, then move forward one tile in current facing.</summary>
+    /// <summary>
+    /// Attempts to jump straight up by a number of tiles, then move forward one tile in the current facing.
+    /// Useful for climbing ledges or stairs.
+    /// </summary>
+    /// <param name="height">Number of tiles to jump upward before stepping forward. Must be >= 1.</param>
+    /// <returns>True if the move sequence was accepted; false otherwise.</returns>
     public bool TryJumpUpThenForward(int height)
     {
         return TryExecuteSequence(new MoveStep[] {
@@ -107,7 +159,11 @@ public class GridMover : MonoBehaviour
         });
     }
 
-    /// <summary>Jump forward in an arc; requires a minimum distance of 3.</summary>
+    /// <summary>
+    /// Attempts to jump forward in a shallow arc. First step is up-forward, last step is down-forward.
+    /// </summary>
+    /// <param name="distance">Total forward tiles to travel. Must be >= 3.</param>
+    /// <returns>True if the move sequence was accepted; false otherwise.</returns>
     public bool TryJumpForward(int distance)
     {
         if (distance < 3)
@@ -123,6 +179,11 @@ public class GridMover : MonoBehaviour
 
 
     // Executes a sequence of high-level movement commands
+    /// <summary>
+    /// Attempts to execute a sequence of high-level movement steps.
+    /// </summary>
+    /// <param name="sequence">Array of MoveStep commands (Forward, JumpUp, JumpForward, Turn) in order.</param>
+    /// <returns>True if accepted and started; false if invalid, blocked, or already moving.</returns>
     public bool TryExecuteSequence(MoveStep[] sequence)
     {
         if (_isMoving) return false;
@@ -174,7 +235,7 @@ public class GridMover : MonoBehaviour
 
     private IEnumerator ExecuteForward(int distance)
     {
-        Vector2Int dir = _pc != null ? _pc.facing : Vector2Int.right;
+        Vector2Int dir = facing;
         List<Vector2Int> steps = new List<Vector2Int>(distance);
         for (int i = 0; i < distance; i++) steps.Add(dir);
         yield return StepSequence(steps, 0f, MovementType.Forward);
@@ -184,7 +245,7 @@ public class GridMover : MonoBehaviour
     {
         List<Vector2Int> steps = new List<Vector2Int>(height + 1);
         for (int i = 0; i < height; i++) steps.Add(Vector2Int.up);
-        Vector2Int f = _pc != null ? _pc.facing : Vector2Int.right;
+        Vector2Int f = facing;
         steps.Add(f);
         yield return StepSequence(steps, 0f, MovementType.JumpOrArc);
     }
@@ -192,7 +253,7 @@ public class GridMover : MonoBehaviour
     private IEnumerator ExecuteJumpForward(int distance)
     {
         List<Vector2Int> steps = new List<Vector2Int>(distance);
-        Vector2Int f = _pc != null ? _pc.facing : Vector2Int.right;
+        Vector2Int f = facing;
         
         // First step: forward-up
         steps.Add(new Vector2Int(f.x, f.y + 1));
@@ -216,7 +277,11 @@ public class GridMover : MonoBehaviour
         transform.position = CellCenterWorld(cell);
     }
 
-    /// <summary>Teleports to a specific cell (no tween).</summary>
+    /// <summary>
+    /// Instantly teleports the transform to the center of the given cell without animation.
+    /// Triggers OnCellChanged for the destination cell.
+    /// </summary>
+    /// <param name="cell">Target grid cell to warp to.</param>
     public void WarpToCell(Vector3Int cell)
     {
         transform.position = CellCenterWorld(cell);
@@ -225,10 +290,9 @@ public class GridMover : MonoBehaviour
 
     bool IsBlocked(Vector3Int cell)
     {
-        Debug.Log(collisionTilemap);
-        Debug.Log(collisionTilemap.HasTile(cell));
-        // Treat any tile present in the collisionTilemap as blocked.
-        return (!collisionTilemap.IsUnityNull() && collisionTilemap.HasTile(cell));
+        if (collisionTilemap == null) return false;
+        return collisionTilemap.HasTile(cell);
+
     }
     
     private bool HasGroundBelow()
@@ -246,7 +310,7 @@ public class GridMover : MonoBehaviour
 
     Vector3 CellCenterWorld(Vector3Int cell)
     {
-        // Center of the cell using Grid cell size
+        if (grid == null) return transform.position;
         return grid.CellToWorld(cell) + grid.cellSize / 2f;
     }
 
@@ -365,9 +429,6 @@ public class GridMover : MonoBehaviour
 
             i++;
         }
-
-        // After jump/arc sequence completes, if we ended midair, fall
-
     }
 
     private IEnumerator FallUntilGrounded()

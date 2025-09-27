@@ -4,9 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     private GridMover _mover;
     private Explosion _explosion;
-
-    public Vector2Int facing = Vector2Int.right;
-
+    
     [SerializeField] private int forwardDistance = 1;
     [SerializeField] private int jumpHeight = 2;
     [SerializeField] private int jumpDistance = 3;
@@ -46,7 +44,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             Debug.Log("Alpha 5 pressed: TryForward()");
-            _explosion.DoExplosion(_mover.CurrentCell, facing);
+            _explosion.DoExplosion(_mover.CurrentCell, _mover.Facing);
         }
     }
 }
