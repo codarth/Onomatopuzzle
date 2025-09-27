@@ -3,12 +3,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private GridMover _mover;
+    private Explosion _explosion;
 
     public Vector2Int facing = Vector2Int.right;
 
     void Awake()
     {
         _mover = GetComponent<GridMover>();
+        _explosion = GetComponent<Explosion>();
     }
 
     void Start()
@@ -39,8 +41,8 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            Debug.Log("Alpha 5 pressed: TryForward(1)");
-            _mover.TryForward(1);
+            Debug.Log("Alpha 5 pressed: TryForward()");
+            _explosion.DoExplosion(_mover.CurrentCell, facing);
         }
     }
 }
