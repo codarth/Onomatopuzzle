@@ -4,6 +4,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    private GridMover mover;
+
+    void Awake()
+    {
+        mover = GetComponent<GridMover>();
+    }
+
     void Start()
     {
     }
@@ -13,7 +20,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("Numpad 1 pressed");
-            MoveForward.StartMoveRightByOneTile(this, transform);
+            mover.TryMove(Vector2Int.right);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
