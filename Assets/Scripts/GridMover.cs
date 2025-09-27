@@ -13,6 +13,8 @@ public class GridMover : MonoBehaviour
     [SerializeField, Min(0f)] private float stepMoveTime = 0.12f; // seconds per tile
     [SerializeField] private bool allowDiagonal = false;
 
+    private PlayerController pc;
+    
     public bool IsMoving { get; private set; }
     public Vector3Int CurrentCell => grid.WorldToCell(transform.position);
 
@@ -27,6 +29,12 @@ public class GridMover : MonoBehaviour
     void Start()
     {
         SnapToGrid();
+        pc = GetComponent<PlayerController>();
+    }
+
+    public void ChangeFacing()
+    {
+        pc.facing = pc.facing == Vector2Int.right ? Vector2Int.left : Vector2Int.right;
     }
 
     /// <summary>Attempts to move by one cell in the given direction (grid units).</summary>
@@ -42,6 +50,37 @@ public class GridMover : MonoBehaviour
         StartCoroutine(MoveToCell(targetCell));
         return true;
     }
+    
+    /// <summary>Attempts to jump 3 tiles up first, then 1 tile right.</summary>
+    public bool TryJump(Vector2Int facingDirection
+    )
+    {
+        if (IsMoving) return false;
+        
+        Vector3Int upTarget = CurrentCell + new Vector3Int(0, 3, 0); // 3 tiles up
+        Vector3Int finalTarget = upTarget + new Vector3Int(facingDirection.x, facingDirection.y, 0); // then 1 tile in facing direction
+        
+        // Check if both positions are valid
+        if (IsBlocked(upTarget) || IsBlocked(finalTarget)) return false;
+        
+        StartCoroutine(JumpSequence(upTarget, finalTarget));
+        return true;
+    }
+    
+    IEnumerator JumpSequence(Vector3Int upTarget, Vector3Int finalTarget)
+    {
+        IsMoving = true;
+        
+        // First move: 3 tiles up
+        yield return StartCoroutine(MoveToCell(upTarget));
+        
+        // Second move: 1 tile right
+        yield return StartCoroutine(MoveToCell(finalTarget));
+        
+        IsMoving = false;
+    }
+
+
 
     /// <summary>Immediately snaps to the center of the current cell.</summary>
     public void SnapToGrid()
@@ -97,4 +136,8 @@ public class GridMover : MonoBehaviour
         IsMoving = false;
         OnCellChanged?.Invoke(targetCell);
     }
+    
+    // Jump function
+    // moves player 3 tiles up, one tile down
+    
 }
