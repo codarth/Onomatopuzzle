@@ -19,8 +19,8 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Debug.Log("Alpha 1 pressed: TryForward()");
-            _mover.TryForward();
+            Debug.Log("Alpha 1 pressed: TryForward(2)");
+            _mover.TryForward(2);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -29,18 +29,18 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            Debug.Log("Alpha 3 pressed: TryJumpUpThenForward(3,1)");
-            _mover.TryJumpUpThenForward();
+            Debug.Log("Alpha 3 pressed: TryJumpUpThenForward(3)");
+            _mover.TryJumpUpThenForward(3);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            Debug.Log("Alpha 4 pressed: TryJumpArc(diagonal 2,2)");
-            _mover.TryJumpArc(new Vector2Int(2, 2), 0.5f);
+            Debug.Log("Alpha 4 pressed: TryJumpForward(4)");
+            _mover.TryJumpForward(7);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            Debug.Log("Alpha 5 pressed: TryForward()");
-            _mover.TryForward();
+            Debug.Log("Alpha 5 pressed: TryForward(1)");
+            _mover.TryForward(1);
         }
     }
 }
