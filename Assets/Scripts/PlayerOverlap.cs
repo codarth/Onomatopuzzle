@@ -2,6 +2,7 @@ using TileScripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using static DataHolder;
 
 public class PlayerOverlap : MonoBehaviour
 {
@@ -56,6 +57,7 @@ public class PlayerOverlap : MonoBehaviour
 
         if (currentSceneIndex < SceneManager.sceneCountInBuildSettings - 1)
         {
+            CurrentLevel++;
             SceneManager.LoadScene(nextSceneIndex);
         }
         else
