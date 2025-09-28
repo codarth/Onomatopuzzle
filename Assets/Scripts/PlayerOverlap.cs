@@ -33,7 +33,7 @@ public class PlayerOverlap : MonoBehaviour
         if (tile == _winningTile)
         {
             //Debug.Log("Player overlapped the Winning Tile!");
-            AudioController.Instance.PlaySFX(PlayerController.Instance.gameWinSfx);
+            AudioController.Instance.PlaySFX(PlayerController.Instance.nextLevelSfx);
             LoadNextLevel();
         }
         else if (tile == _damageTile)
@@ -49,7 +49,7 @@ public class PlayerOverlap : MonoBehaviour
                 Debug.Log("Player overlapped the Glorp Tile!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 AudioController.Instance.PlaySFX(PlayerController.Instance.glorpSfx);
                 _tilemap.SetTile(_tilemap.WorldToCell(transform.position), null);
-                
+
                 // Add glorp to score
                 if (GlobalState.Instance != null)
                 {
@@ -66,15 +66,22 @@ public class PlayerOverlap : MonoBehaviour
         {
             GlobalState.Instance.CalculateLevelScore();
         }
-        
+
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
 
         if (currentSceneIndex < SceneManager.sceneCountInBuildSettings - 1)
         {
             CurrentLevel++;
-            AudioController.Instance.PlaySFX(PlayerController.Instance.nextLevelSfx);
-            SceneManager.LoadScene(nextSceneIndex);
+            if (CurrentLevel > SceneManager.sceneCountInBuildSettings -1 ) // Empty level at end does not count 
+            {
+                AudioController.Instance.PlaySFX(PlayerController.Instance.gameWinSfx);
+            }
+            else
+            {
+                AudioController.Instance.PlaySFX(PlayerController.Instance.nextLevelSfx);
+                SceneManager.LoadScene(nextSceneIndex);
+            }
         }
         else
         {

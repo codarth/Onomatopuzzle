@@ -15,6 +15,7 @@ public class ButtonMapper : MonoBehaviour
         if (playerController)
         {
             playerController.MoveForward();
+            AudioController.Instance.PlaySFX(PlayerController.Instance.buttonSfx);
         }
         else
         {
@@ -27,6 +28,7 @@ public class ButtonMapper : MonoBehaviour
         if (playerController)
         {
             playerController.TryJumpAndMoveForward();
+            AudioController.Instance.PlaySFX(PlayerController.Instance.buttonSfx);
         }
         else
         {
@@ -39,6 +41,7 @@ public class ButtonMapper : MonoBehaviour
         if (playerController)
         {
             playerController.ChangeDirection();
+            AudioController.Instance.PlaySFX(PlayerController.Instance.buttonSfx);
         }
         else
         {
@@ -51,6 +54,7 @@ public class ButtonMapper : MonoBehaviour
         if (playerController)
         {
             playerController.TryJumpForward();
+            AudioController.Instance.PlaySFX(PlayerController.Instance.buttonSfx);
         }
         else
         {
@@ -63,6 +67,7 @@ public class ButtonMapper : MonoBehaviour
         if (playerController)
         {
             playerController.TryExplosion();
+            AudioController.Instance.PlaySFX(PlayerController.Instance.buttonSfx);
         }
         else
         {
@@ -76,6 +81,7 @@ public class ButtonMapper : MonoBehaviour
         if (playerController)
         {
             playerController.TryZap();
+            AudioController.Instance.PlaySFX(PlayerController.Instance.buttonSfx);
         }
         else
         {

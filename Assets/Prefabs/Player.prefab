@@ -70,7 +70,8 @@ MonoBehaviour:
   gameWinSfx: {fileID: 8300000, guid: 9100cfa469c531b4f964c1a76b613984, type: 3}
   deathSfx: {fileID: 8300000, guid: 434697d56bd5c8e4087256af1ef3815b, type: 3}
   glorpSfx: {fileID: 8300000, guid: 74476bcc42eade342b1b5d75f7d38638, type: 3}
-  nextLevelSfx: {fileID: 0}
+  nextLevelSfx: {fileID: 8300000, guid: 5bebfe3507e0fff4d98d6425ad2572b7, type: 3}
+  buttonSfx: {fileID: 8300000, guid: 839dad983fce6544ab3a286c391aa280, type: 3}
 --- !u!114 &8435964990629369730
 MonoBehaviour:
   m_ObjectHideFlags: 0

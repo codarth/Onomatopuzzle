@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip deathSfx;
     public AudioClip glorpSfx;
     public AudioClip nextLevelSfx;
+    public AudioClip buttonSfx;
 
 
     void Awake()

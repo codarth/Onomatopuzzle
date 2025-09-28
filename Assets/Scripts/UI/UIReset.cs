@@ -19,6 +19,7 @@ namespace UI
         public void RestartGame()
         {
             Debug.Log("Restarting Level");
+            AudioController.Instance.PlaySFX(PlayerController.Instance.buttonSfx);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
