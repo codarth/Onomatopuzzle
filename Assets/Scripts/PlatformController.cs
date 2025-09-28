@@ -50,14 +50,9 @@ public class PlatformController : MonoBehaviour
         
         // Update debug info if direction changed
         UpdateDebugInfo();
-        
-        // Only allow new movement if not currently moving
-        if ((Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.H)) && !isCurrentlyMoving)
-        {
-            Debug.Log($"Platform {gameObject.name} trying to move {direction}");
-            AudioController.Instance.PlaySFX(PlayerController.Instance.zapSfx);
-            TryMoveAndReverseDirection();
-        }
+
+        // Remove the input handling - platforms should only move when explicitly triggered
+        // The player's TryZap() method will handle platform activation
 
         if (isCurrentlyMoving)
         {
@@ -68,6 +63,7 @@ public class PlatformController : MonoBehaviour
             _sr.sprite = idleSprite;
         }
     }
+
 
     private void UpdateDebugInfo()
     {
@@ -85,6 +81,13 @@ public class PlatformController : MonoBehaviour
         if (isCurrentlyMoving) return false;
         if (GridMover.IsAnyGridMoverMoving) return false;
         
+        // Validate that this platform is actually below the player
+        if (!IsPlayerDirectlyAbove())
+        {
+            Debug.Log($"Platform {gameObject.name} not active - player not above");
+            return false;
+        }
+        
         // Check if the first step in the direction is possible
         Vector2Int directionVector = GridMover.GetDirectionVector(direction);
         Vector3Int currentCell = gridMover.CurrentCell;
@@ -94,6 +97,36 @@ public class PlatformController : MonoBehaviour
         
         StartCoroutine(MoveAndReverseDirection());
         return true;
+    }
+    
+    /// <summary>
+    /// Checks if a player is currently a child of this platform.
+    /// This is more reliable than spatial detection as it uses the existing parent-child relationship.
+    /// </summary>
+    /// <returns>True if a player is parented to this platform, false otherwise.</returns>
+    private bool IsPlayerDirectlyAbove()
+    {
+        // Check all direct children for a PlayerController component
+        foreach (Transform child in transform)
+        {
+            PlayerController player = child.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                Debug.Log($"Found player {child.name} as child of platform {gameObject.name}");
+                return true;
+            }
+        }
+        
+        // Also check nested children in case there's a hierarchy
+        PlayerController[] playersInChildren = GetComponentsInChildren<PlayerController>();
+        if (playersInChildren.Length > 0)
+        {
+            Debug.Log($"Found {playersInChildren.Length} player(s) in children of platform {gameObject.name}");
+            return true;
+        }
+        
+        Debug.Log($"No players found as children of platform {gameObject.name}");
+        return false;
     }
 
     private System.Collections.IEnumerator MoveAndReverseDirection()

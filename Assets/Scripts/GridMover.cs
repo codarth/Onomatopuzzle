@@ -705,39 +705,50 @@ public class GridMover : MonoBehaviour
         if (_isMoving) return false;
         if (!_isPlayer) return false; // Only players can zap
         
-        // Check if player is currently on a platform
-        PlatformController platform = GetPlatformBelow();
+        Debug.Log($"Player attempting zap. Current parent: {(transform.parent != null ? transform.parent.name : "null")}");
+        
+        // Check if player is currently parented to a platform
+        PlatformController platform = GetCurrentPlatformParent();
         if (platform != null)
         {
-            // Trigger the platform's enhanced MoveAndReverseDirection
+            Debug.Log($"Found parent platform: {platform.name}");
+            // Trigger the platform's MoveAndReverseDirection
             if (platform.TryMoveAndReverseDirection())
             {
+                Debug.Log($"Successfully activated parent platform: {platform.name}");
                 return true;
             }
+            else
+            {
+                Debug.Log($"Parent platform {platform.name} rejected movement request");
+            }
+        }
+        else
+        {
+            Debug.Log("Player is not parented to any platform");
         }
         
         return false;
     }
     
-    /// <summary>
-    /// Helper method to get the platform controller directly below the player.
-    /// </summary>
-    /// <returns>PlatformController if one exists below, null otherwise.</returns>
-    private PlatformController GetPlatformBelow()
+    private PlatformController GetCurrentPlatformParent()
     {
-        Vector3Int currentCell = CurrentCell;
-        Vector3Int belowCell = currentCell + Vector3Int.down;
-        Vector3 worldPos = grid.CellToWorld(belowCell) + grid.cellSize / 2f;
-        
-        Collider2D collider = Physics2D.OverlapPoint(worldPos);
-        
-        if (collider != null)
+        if (transform.parent == null)
         {
-            PlatformController platform = collider.GetComponentInParent<PlatformController>();
+            return null;
+        }
+        
+        // Check if the direct parent is a platform
+        PlatformController platform = transform.parent.GetComponent<PlatformController>();
+        Debug.Log($"Checking parent: {platform.name}");;
+        if (platform != null)
+        {
             return platform;
         }
         
-        return null;
+        // Check if any parent in the hierarchy is a platform (for nested hierarchies)
+        platform = transform.parent.GetComponentInParent<PlatformController>();
+        return platform;
     }
 
     private void OnDestroy()
