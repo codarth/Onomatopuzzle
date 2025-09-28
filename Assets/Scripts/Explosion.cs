@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 
 public class Explosion : MonoBehaviour
 {
-    private Tilemap _tilemap;
+    [SerializeField] private Tilemap _tilemap;
     private GridMover _gridMover;
 
     public float glorpChance = 0.1f; // 10% chance to spawn a glorp
@@ -15,7 +15,7 @@ public class Explosion : MonoBehaviour
 
     private void Start()
     {
-        _tilemap = FindFirstObjectByType<Tilemap>();
+        // _tilemap = FindFirstObjectByType<Tilemap>();
         _gridMover = GetComponent<GridMover>();
     }
 
