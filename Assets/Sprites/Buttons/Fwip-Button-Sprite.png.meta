@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 196c1b0a284b32f4dbdcfab8a8a4d0fd
+guid: 842b8eeb7b64e8b408f35db949bd5f13
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3483186918588902853
-    second: Boing-Button-Sprite_0
+      213: 3267796545797640123
+    second: Fwip-Button-Sprite_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boing-Button-Sprite_0
+      name: Fwip-Button-Sprite_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,14 +128,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b329837c3fb39afc0800000000000000
-      internalID: -3483186918588902853
+      spriteID: bbf448615ab895d20800000000000000
+      internalID: 3267796545797640123
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boing-Button-Sprite_1
+      name: Fwip-Button-Sprite_1
       rect:
         serializedVersion: 2
         x: 120
@@ -150,8 +150,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 58c9df91646598947bf8f0796df50a8d
-      internalID: -1404025942
+      spriteID: 374d2c5c8f96025468ac420bff12e5aa
+      internalID: 1282083550
       vertices: []
       indices: 
       edges: []
@@ -160,7 +160,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e5c8bcacef02134f977d75142d5ba03
+    spriteID: 375cb1316c6fa1749a2fdbffbd3fcd7e
     internalID: 0
     vertices: []
     indices: 
@@ -172,8 +172,8 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":1.0},"gridSpriteSize":{"x":120.0,"y":90.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Boing-Button-Sprite_0: -3483186918588902853
-      Boing-Button-Sprite_1: -1404025942
+      Fwip-Button-Sprite_0: 3267796545797640123
+      Fwip-Button-Sprite_1: 1282083550
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
