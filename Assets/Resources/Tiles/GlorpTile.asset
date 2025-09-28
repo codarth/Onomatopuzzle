@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b81bf6e377a15f41976188a4a4476ff, type: 3}
   m_Name: GlorpTile
   m_EditorClassIdentifier: Assembly-CSharp::TileScripts.GlorpTile
-  sprite: {fileID: 0}
+  sprite: {fileID: 7282892700170619612, guid: e04c49b459bb43742a86763b77c04a39, type: 3}
