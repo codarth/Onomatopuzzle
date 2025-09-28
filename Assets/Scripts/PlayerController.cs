@@ -1,4 +1,5 @@
 using UnityEngine;
+using static DataHolder;
 
 public class PlayerController : MonoBehaviour
 {
@@ -41,22 +42,23 @@ public class PlayerController : MonoBehaviour
             if (!_globalState.hasEnoughPower(changeFacingEnergyCost)) return;
             TryJumpAndMoveForward();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && CurrentLevel > 0)
         {
+            Debug.Log("CurrentLevel is " + CurrentLevel);
             if (!_globalState.hasEnoughPower(jumpUpEnergyCost)) return;
             ChangeDirection();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && CurrentLevel > 1)
         {
             if (!_globalState.hasEnoughPower(longJumpEnergyCost)) return;
             TryJumpForward();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        else if (Input.GetKeyDown(KeyCode.Alpha5) && CurrentLevel < 2)
         {
             if (!_globalState.hasEnoughPower(explosionEnergyCost)) return;
             TryExplosion();
         }        
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        else if (Input.GetKeyDown(KeyCode.Alpha6) && CurrentLevel < 3)
         {
             if (!_globalState.hasEnoughPower(zapEnergyCost)) return;
             TryZap();
