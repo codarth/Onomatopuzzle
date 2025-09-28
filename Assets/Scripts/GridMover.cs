@@ -671,6 +671,29 @@ public class GridMover : MonoBehaviour
             }
         }
     }
+    
+    /// <summary>
+    /// Attempts to perform an explosion in the facing direction.
+    /// Respects the global movement lock to ensure explosions don't interfere with movement.
+    /// </summary>
+    /// <returns>True if explosion was accepted and will start; false if blocked by movement lock.</returns>
+    public bool TryExplosion()
+    {
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return false;
+        if (_isMoving) return false;
+        
+        // Explosion doesn't need ground validation - can explode in air
+        // Get the explosion component and start the explosion
+        Explosion explosion = GetComponent<Explosion>();
+        if (explosion != null)
+        {
+            StartCoroutine(explosion.DoExplosion(CurrentCell, Facing));
+            return true;
+        }
+        
+        return false;
+    }
+
 
     private void OnDestroy()
     {

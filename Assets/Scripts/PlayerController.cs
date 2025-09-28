@@ -52,7 +52,8 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            DoExplosion();
+            if (!_globalState.hasEnoughPower(explosionEnergyCost)) return;
+            TryExplosion();
         }
     }
     
@@ -95,9 +96,15 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void DoExplosion()
+    public bool TryExplosion()
     {
-        Debug.Log("Alpha 5 pressed: TryForward()");
-        StartCoroutine(_explosion.DoExplosion(_mover.CurrentCell, _mover.Facing));
+        Debug.Log("Alpha 5 pressed: TryExplosion()");
+        if (_mover.TryExplosion())
+        {
+            _globalState.DecreasePower(explosionEnergyCost);
+            return true;
+        }
+        return false;
     }
+
 }

@@ -62,7 +62,7 @@ public class ButtonMapper : MonoBehaviour
         Debug.Log("Button5 pressed");
         if (playerController)
         {
-            playerController.DoExplosion();
+            playerController.TryExplosion();
         }
         else
         {
