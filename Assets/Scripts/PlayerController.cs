@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.R))
         {
             if (!_globalState.hasEnoughPower(forwardEnergyCost))
             {
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
             MoveForward();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.T))
         {
             if (!_globalState.hasEnoughPower(changeFacingEnergyCost))
             {
@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
             TryJumpAndMoveForward();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3)/* && CurrentLevel > 0*/)
+        else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Y)/* && CurrentLevel > 0*/)
         {
             Debug.Log("CurrentLevel is " + CurrentLevel);
             if (!_globalState.hasEnoughPower(jumpUpEnergyCost))
@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
             ChangeDirection();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4)/* && CurrentLevel > 1*/)
+        else if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.F)/* && CurrentLevel > 1*/)
         {
             if (!_globalState.hasEnoughPower(longJumpEnergyCost))
             {
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
             TryJumpForward();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha5)/* && CurrentLevel < 2*/)
+        else if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.G)/* && CurrentLevel < 2*/)
         {
             if (!_globalState.hasEnoughPower(explosionEnergyCost))
             {
@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour
 
             TryExplosion();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha6)/* && CurrentLevel < 3*/)
+        else if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.H)/* && CurrentLevel < 3*/)
         {
             if (!_globalState.hasEnoughPower(zapEnergyCost))
             {
@@ -114,6 +114,15 @@ public class PlayerController : MonoBehaviour
 
             TryZap();
         }
+        else if (Input.GetMouseButtonDown(2))
+        {
+            Debug.Log("Exiting game...");
+            Application.Quit();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        }
+
     }
 
     public void MoveForward()

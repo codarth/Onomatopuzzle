@@ -17,6 +17,9 @@ public class GlobalState : MonoBehaviour
     
     public static GlobalState Instance;
 
+    [Header("Game Timer")]
+    public float inactivityLimit = 180f; // 3 minutes in seconds
+    private float _inactivityTimer = 0f;
 
     private void Awake()
     {
@@ -34,6 +37,25 @@ public class GlobalState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Check for any inout
+        if (Input.anyKeyDown || Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+        {
+            _inactivityTimer = 0f; // Reset timer on input
+        }
+        else
+        {
+            inactivityLimit += Time.deltaTime; // Increment timer
+        }
+
+        if (_inactivityTimer >= inactivityLimit)
+        {
+            Debug.Log("No input detected for 3 minutes. Quitting game...");
+            Application.Quit();
+            
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #endif
+        }
     }
     
     private void Start()
