@@ -794,58 +794,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2158604679148538179, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Transition
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2158604679148538179, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_SpriteState.m_PressedSprite
-      value: 
-      objectReference: {fileID: -1404025942, guid: 196c1b0a284b32f4dbdcfab8a8a4d0fd, type: 3}
-    - target: {fileID: 2161885840457406324, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Transition
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2161885840457406324, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_SpriteState.m_PressedSprite
-      value: 
-      objectReference: {fileID: -1404025942, guid: 196c1b0a284b32f4dbdcfab8a8a4d0fd, type: 3}
-    - target: {fileID: 2194697876740449336, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2461977416199207520, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.b
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 2461977416199207520, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.g
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 2461977416199207520, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.r
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 2585292979312922231, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.b
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 2585292979312922231, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.g
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 2585292979312922231, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.r
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 3177501302285163131, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Transition
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3177501302285163131, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_SpriteState.m_PressedSprite
-      value: 
-      objectReference: {fileID: -1404025942, guid: 196c1b0a284b32f4dbdcfab8a8a4d0fd, type: 3}
     - target: {fileID: 4818238603540583914, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -926,73 +874,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5331135311285078255, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5331135311285078255, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -3483186918588902853, guid: 196c1b0a284b32f4dbdcfab8a8a4d0fd, type: 3}
-    - target: {fileID: 5331135311285078255, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.b
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 5331135311285078255, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.g
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 5331135311285078255, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.r
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 5554384481035206463, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Transition
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5554384481035206463, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_SpriteState.m_PressedSprite
-      value: 
-      objectReference: {fileID: -1404025942, guid: 196c1b0a284b32f4dbdcfab8a8a4d0fd, type: 3}
-    - target: {fileID: 6538290696307553010, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.b
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538290696307553010, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.g
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 6538290696307553010, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.r
-      value: 0.78431374
-      objectReference: {fileID: 0}
     - target: {fileID: 6898302736601606311, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
       propertyPath: m_Name
       value: UI
-      objectReference: {fileID: 0}
-    - target: {fileID: 7137857901273204003, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Transition
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7137857901273204003, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_SpriteState.m_PressedSprite
-      value: 
-      objectReference: {fileID: -1404025942, guid: 196c1b0a284b32f4dbdcfab8a8a4d0fd, type: 3}
-    - target: {fileID: 8798663526152464704, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8882371839465947648, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.b
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 8882371839465947648, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.g
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 8882371839465947648, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
-      propertyPath: m_Color.r
-      value: 0.78431374
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
