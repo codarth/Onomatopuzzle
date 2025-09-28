@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     private GridMover _mover;
     private Explosion _explosion;
+    private GlobalState _globalState;
     
     [SerializeField] private int forwardDistance = 1;
     [SerializeField] private int jumpHeight = 2;
@@ -13,10 +14,12 @@ public class PlayerController : MonoBehaviour
     {
         _mover = GetComponent<GridMover>();
         _explosion = GetComponent<Explosion>();
+        _globalState = GlobalState.Instance;
     }
 
     void Start()
     {
+        
     }
 
     void Update()

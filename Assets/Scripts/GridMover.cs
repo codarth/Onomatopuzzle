@@ -68,9 +68,21 @@ public class GridMover : MonoBehaviour
 
     // Private state
     private bool _isMoving;
+
+    // Global movement lock: only one GridMover can move at a time across the scene
+    private static bool _anyGridMoverMoving = false;
+    private static GridMover _currentMovingGridMover = null;
+    public static bool IsAnyGridMoverMoving => _anyGridMoverMoving;
     
     // Private list to cache tilemaps with colliders
     private Tilemap[] collisionTilemaps;
+
+    // Moving platform parenting
+    [Header("Platform Carry Settings")]
+    [Tooltip("If enabled, objects with PlayerController will parent to PlatformController underfoot after moves.")]
+    [SerializeField] private bool enablePlatformParenting = true;
+    private Transform _currentPlatformParent = null;
+    private bool _isPlayer = false;
 
     /// <summary>
     /// Unity message. Ensures required references are located if not set via the Inspector.
@@ -88,6 +100,7 @@ public class GridMover : MonoBehaviour
         }
 
         RefreshCollisionTilemaps();
+        _isPlayer = GetComponent<PlayerController>() != null;
     }
     
     private void RefreshCollisionTilemaps()
@@ -161,6 +174,7 @@ public class GridMover : MonoBehaviour
     /// <returns>True if the command was accepted (not already moving and on valid ground), otherwise false.</returns>
     public void ChangeFacing()
     {
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return;
         TryExecuteSequence(new MoveStep[] {
             new MoveStep(MoveCommand.Turn)
         });
@@ -173,6 +187,7 @@ public class GridMover : MonoBehaviour
     /// <returns>True if the move sequence was accepted and will run; false if blocked or already moving.</returns>
     public void TryForward(int distance = 1)
     {
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return;
         TryExecuteSequence(new MoveStep[] {
             new MoveStep(MoveCommand.Forward, distance)
         });
@@ -186,6 +201,7 @@ public class GridMover : MonoBehaviour
     /// <returns>True if the move sequence was accepted; false otherwise.</returns>
     public void TryJumpUpThenForward(int height)
     {
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return;
         TryExecuteSequence(new MoveStep[] {
             new MoveStep(MoveCommand.JumpUp, height)
         });
@@ -198,6 +214,7 @@ public class GridMover : MonoBehaviour
     /// <returns>True if the move sequence was accepted; false otherwise.</returns>
     public void TryJumpForward(int distance)
     {
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return;
         if (distance < 3)
         {
             Debug.LogWarning("TryJumpForward requires minimum distance of 3");
@@ -217,6 +234,7 @@ public class GridMover : MonoBehaviour
     /// <returns>True if movement started, false if already moving or invalid args.</returns>
     public void TryMoveInDirection(Vector2Int direction, int distance)
     {
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return;
         if (_isMoving) return;
         if (distance <= 0) return;
 
@@ -241,6 +259,8 @@ public class GridMover : MonoBehaviour
     // Coroutine that performs simple directional movement without any checks
     private IEnumerator MoveInDirection(Vector2Int unit, int distance)
     {
+        _anyGridMoverMoving = true;
+        _currentMovingGridMover = this;
         _isMoving = true;
         Vector3Int cell = CurrentCell;
         for (int i = 0; i < distance; i++)
@@ -250,6 +270,9 @@ public class GridMover : MonoBehaviour
             cell = next;
         }
         _isMoving = false;
+        UpdatePlatformParentIfNeeded();
+        _anyGridMoverMoving = false;
+        _currentMovingGridMover = null;
     }
 
 
@@ -261,6 +284,7 @@ public class GridMover : MonoBehaviour
     /// <returns>True if accepted and started; false if invalid, blocked, or already moving.</returns>
     public void TryExecuteSequence(MoveStep[] sequence)
     {
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return;
         if (_isMoving) return;
         if (sequence == null || sequence.Length == 0) return;
         if (!HasGroundBelow()) return;
@@ -269,6 +293,8 @@ public class GridMover : MonoBehaviour
 
     private IEnumerator ExecuteSequence(MoveStep[] sequence)
     {
+        _anyGridMoverMoving = true;
+        _currentMovingGridMover = this;
         _isMoving = true;
         for (int i = 0; i < sequence.Length; i++)
         {
@@ -281,6 +307,9 @@ public class GridMover : MonoBehaviour
             }
         }
         _isMoving = false;
+        UpdatePlatformParentIfNeeded();
+        _anyGridMoverMoving = false;
+        _currentMovingGridMover = null;
     }
 
     private IEnumerator ExecuteCommand(MoveStep step)
@@ -519,6 +548,78 @@ public class GridMover : MonoBehaviour
             if (IsBlocked(down)) break;
             yield return MoveOneStep(cell, down, 0f);
             cell = down;
+        }
+        // After landing, update platform parenting (player should stick to platform if any)
+        UpdatePlatformParentIfNeeded();
+    }
+
+    // Detect platform underfoot and set/unset parent accordingly for players
+    private void UpdatePlatformParentIfNeeded()
+    {
+        if (!enablePlatformParenting) return;
+        if (!_isPlayer) return;
+    
+        Debug.Log("UpdatePlatformParentIfNeeded called");
+        Transform newParent = null;
+
+        // Check the cell directly below the player, same as ground detection
+        Vector3Int currentCell = CurrentCell;
+        Vector3Int belowCell = currentCell + Vector3Int.down;
+        Vector3 worldPos = grid.CellToWorld(belowCell) + grid.cellSize / 2f;
+    
+        Debug.Log($"Checking for platform below player at cell: {belowCell}, world pos: {worldPos}");
+    
+        // Use the same detection method as IsBlocked but look for platforms instead
+        Collider2D collider = Physics2D.OverlapPoint(worldPos);
+    
+        if (collider != null)
+        {
+            Debug.Log($"Found collider below: {collider.name}");
+        
+            // Check if this collider belongs to a platform
+            PlatformController plat = collider.GetComponentInParent<PlatformController>();
+            if (plat != null)
+            {
+                Debug.Log($"Found PlatformController on: {plat.name}");
+                newParent = plat.transform;
+            }
+            else
+            {
+                Debug.Log($"No PlatformController found on {collider.name}");
+            }
+        }
+        else
+        {
+            Debug.Log("No colliders found below player");
+        }
+
+        if (newParent != null)
+        {
+            if (_currentPlatformParent != newParent)
+            {
+                Debug.Log($"Setting parent to: {newParent.name}");
+                transform.SetParent(newParent, true);
+                _currentPlatformParent = newParent;
+            }
+        }
+        else
+        {
+            if (_currentPlatformParent != null)
+            {
+                Debug.Log("Removing platform parent");
+                transform.SetParent(null, true);
+                _currentPlatformParent = null;
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Release global lock if this mover was holding it
+        if (_currentMovingGridMover == this)
+        {
+            _anyGridMoverMoving = false;
+            _currentMovingGridMover = null;
         }
     }
 }
