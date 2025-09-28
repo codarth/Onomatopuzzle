@@ -121,9 +121,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GridMover, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 3309743418028654361}
+        m_TargetAssemblyTypeName: ButtonMapper, Assembly-CSharp
+        m_MethodName: Button1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -392,9 +392,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GridMover, Assembly-CSharp
-        m_MethodName: TryJumpUpThenForward
+      - m_Target: {fileID: 3309743418028654361}
+        m_TargetAssemblyTypeName: ButtonMapper, Assembly-CSharp
+        m_MethodName: Button3
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1233,9 +1233,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GridMover, Assembly-CSharp
-        m_MethodName: ChangeFacing
+      - m_Target: {fileID: 3309743418028654361}
+        m_TargetAssemblyTypeName: ButtonMapper, Assembly-CSharp
+        m_MethodName: Button2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1257,6 +1257,7 @@ GameObject:
   - component: {fileID: 6137151899376003696}
   - component: {fileID: 4794631406536842594}
   - component: {fileID: 9148141436103763886}
+  - component: {fileID: 3309743418028654361}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -1354,6 +1355,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3309743418028654361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6898302736601606311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6554fc7482a77642af399d001cb3259, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonMapper
+  gridMover: {fileID: 0}
 --- !u!1 &7080770766026354741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1613,13 +1627,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 3309743418028654361}
+        m_TargetAssemblyTypeName: ButtonMapper, Assembly-CSharp
+        m_MethodName: Button4
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2022,13 +2036,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 3309743418028654361}
+        m_TargetAssemblyTypeName: ButtonMapper, Assembly-CSharp
+        m_MethodName: Button5
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
