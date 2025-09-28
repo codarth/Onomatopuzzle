@@ -51,8 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bda6e75710b676a46b3a84fa6335a147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  facing: {x: 1, y: 0}
-  forwardDistance: 1
+  forwardDistance: 2
   jumpHeight: 2
   jumpDistance: 3
 --- !u!114 &8435964990629369730
@@ -68,8 +67,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveForward
   grid: {fileID: 0}
-  collisionTilemap: {fileID: 0}
   stepMoveTime: 0.12
+  facingDirection: 0
+  enablePlatformParenting: 1
 --- !u!61 &6793178354041549487
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -213,6 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906b7ea0b79fb8c45b1e7c0111be5da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerOverlap
+  _tilemap: {fileID: 0}
 --- !u!114 &6437385171549654330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,6 +226,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07aac4539f6dee74cb15529caceee69a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Explosion
+  glorpChance: 0.1
+  timeBetreenExplosions: 0.2
 --- !u!95 &1955261223689255067
 Animator:
   serializedVersion: 7
