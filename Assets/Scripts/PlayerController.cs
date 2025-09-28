@@ -3,6 +3,8 @@ using static DataHolder;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+
     private GridMover _mover;
     private Explosion _explosion;
     private GlobalState _globalState;
@@ -23,19 +25,22 @@ public class PlayerController : MonoBehaviour
 
     [Header("Sound Effects")] 
     private AudioController AudioController => AudioController.Instance;
-    [SerializeField] private AudioClip moveForwardSfx;
-    [SerializeField] private AudioClip jumpUpSfx;
-    [SerializeField] private AudioClip longJumpSfx;
-    [SerializeField] private AudioClip changeDirectionSfx;
-    [SerializeField] private AudioClip explodeSfx;
-    [SerializeField] private AudioClip zapSfx;
-    [SerializeField] private AudioClip batteryEmptySfx;
-    [SerializeField] private AudioClip gameWinSfx;
-    [SerializeField] private AudioClip deathSfx;
+    public AudioClip moveForwardSfx;
+    public AudioClip jumpUpSfx;
+    public AudioClip longJumpSfx;
+    public AudioClip changeDirectionSfx;
+    public AudioClip explodeSfx;
+    public AudioClip zapSfx;
+    public AudioClip batteryEmptySfx;
+    public AudioClip gameWinSfx;
+    public AudioClip deathSfx;
+    public AudioClip glorpSfx;
 
 
     void Awake()
     {
+        Instance = this;
+
         _mover = GetComponent<GridMover>();
         _explosion = GetComponent<Explosion>();
     }
@@ -67,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
             TryJumpAndMoveForward();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3) && CurrentLevel > 0)
+        else if (Input.GetKeyDown(KeyCode.Alpha3)/* && CurrentLevel > 0*/)
         {
             Debug.Log("CurrentLevel is " + CurrentLevel);
             if (!_globalState.hasEnoughPower(jumpUpEnergyCost))
@@ -78,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
             ChangeDirection();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4) && CurrentLevel > 1)
+        else if (Input.GetKeyDown(KeyCode.Alpha4)/* && CurrentLevel > 1*/)
         {
             if (!_globalState.hasEnoughPower(longJumpEnergyCost))
             {
@@ -88,7 +93,7 @@ public class PlayerController : MonoBehaviour
 
             TryJumpForward();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha5) && CurrentLevel < 2)
+        else if (Input.GetKeyDown(KeyCode.Alpha5)/* && CurrentLevel < 2*/)
         {
             if (!_globalState.hasEnoughPower(explosionEnergyCost))
             {
@@ -98,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
             TryExplosion();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha6) && CurrentLevel < 3)
+        else if (Input.GetKeyDown(KeyCode.Alpha6)/* && CurrentLevel < 3*/)
         {
             if (!_globalState.hasEnoughPower(zapEnergyCost))
             {
