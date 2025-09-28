@@ -4,7 +4,7 @@ public class PlatformController : MonoBehaviour
 {
     [Header("Platform Movement Settings")]
     [Tooltip("Direction to move when pressing Q. Cardinal directions recommended (up/down/left/right).")]
-    [SerializeField] private Vector2Int direction = default;
+    [SerializeField] private GridMover.MovementDirection direction = default;
 
     [Tooltip("How many tiles to move in the configured direction when pressing Q.")]
     [SerializeField, Min(1)] private int distance = 1;
@@ -21,7 +21,7 @@ public class PlatformController : MonoBehaviour
         }
         if (direction == default)
         {
-            direction = Vector2Int.right; // default per requirements
+            direction = GridMover.MovementDirection.Right; // default per requirements
         }
     }
 
@@ -30,7 +30,7 @@ public class PlatformController : MonoBehaviour
         if (gridMover == null) return;
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            gridMover.TryMoveInDirection(direction, Mathf.Max(1, distance));
+            gridMover.TryMoveInDirection(GridMover.GetDirectionVector(direction), Mathf.Max(1, distance));
         }
     }
 }

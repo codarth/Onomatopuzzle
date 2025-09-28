@@ -29,6 +29,10 @@ public class GridMover : MonoBehaviour
         }
     }
 
+    // Direction enums for inspector-friendly selection
+    public enum FacingDirection { Right, Left }
+    public enum MovementDirection { Up, Down, Left, Right }
+
     [Header("References")]
     [Tooltip("Grid or GridLayout that defines the world-to-cell mapping for movement.")]
     [SerializeField] private GridLayout grid;
@@ -36,14 +40,15 @@ public class GridMover : MonoBehaviour
     [Header("Movement Settings")]
     [Tooltip("Seconds to move one tile. Lower is faster. 0 snaps instantly.")]
     [SerializeField, Min(0f)] private float stepMoveTime = 0.12f;
-    [Tooltip("Current facing direction in grid units. Typically (1,0) or (-1,0).")]
-    [SerializeField] private Vector2Int facing = Vector2Int.right;
+    [Tooltip("Current facing direction.")]
+    [SerializeField] private FacingDirection facingDirection = FacingDirection.Right;
+    
 
     // Properties
     /// <summary>
     /// Current facing direction in grid coordinates.
     /// </summary>
-    public Vector2Int Facing => facing;
+    public Vector2Int Facing => GetFacingVector();
 
     /// <summary>
     /// True while a movement sequence or step is being executed.
@@ -114,7 +119,26 @@ public class GridMover : MonoBehaviour
     // Original facing flip kept as private for Turn command execution
     private void DoChangeFacing()
     {
-        facing = (facing == Vector2Int.right) ? Vector2Int.left : Vector2Int.right;
+        facingDirection = (facingDirection == FacingDirection.Right) ? FacingDirection.Left : FacingDirection.Right;
+    }
+
+    // Helper to convert enum to vector for internal use
+    private Vector2Int GetFacingVector()
+    {
+        return facingDirection == FacingDirection.Right ? Vector2Int.right : Vector2Int.left;
+    }
+
+    // Static helper to convert MovementDirection enum to Vector2Int
+    public static Vector2Int GetDirectionVector(MovementDirection dir)
+    {
+        switch (dir)
+        {
+            case MovementDirection.Up: return Vector2Int.up;
+            case MovementDirection.Down: return Vector2Int.down;
+            case MovementDirection.Left: return Vector2Int.left;
+            case MovementDirection.Right: return Vector2Int.right;
+            default: return Vector2Int.zero;
+        }
     }
 
     // Public wrapper now routes through the sequence system
@@ -272,7 +296,7 @@ public class GridMover : MonoBehaviour
 
     private IEnumerator ExecuteForward(int distance)
     {
-        Vector2Int dir = facing;
+        Vector2Int dir = GetFacingVector();
         List<Vector2Int> steps = new List<Vector2Int>(distance);
         for (int i = 0; i < distance; i++) steps.Add(dir);
         yield return StepSequence(steps, 0f, MovementType.Forward);
@@ -282,7 +306,7 @@ public class GridMover : MonoBehaviour
     {
         List<Vector2Int> steps = new List<Vector2Int>(height + 1);
         for (int i = 0; i < height; i++) steps.Add(Vector2Int.up);
-        Vector2Int f = facing;
+        Vector2Int f = GetFacingVector();
         steps.Add(f);
         yield return StepSequence(steps, 0f, MovementType.JumpOrArc);
     }
@@ -290,7 +314,7 @@ public class GridMover : MonoBehaviour
     private IEnumerator ExecuteJumpForward(int distance)
     {
         List<Vector2Int> steps = new List<Vector2Int>(distance);
-        Vector2Int f = facing;
+        Vector2Int f = GetFacingVector();
         
         // First step: forward-up
         steps.Add(new Vector2Int(f.x, f.y + 1));
