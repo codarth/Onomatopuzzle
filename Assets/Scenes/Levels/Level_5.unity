@@ -874,7 +874,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6898302736601606311, guid: 5b11a5b340356684cbf97603a26bcdc8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -983,7 +983,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 1
-      m_TileSpriteIndex: 9
+      m_TileSpriteIndex: 12
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -1323,7 +1323,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 9
-      m_TileSpriteIndex: 6
+      m_TileSpriteIndex: 9
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -2138,20 +2138,20 @@ Tilemap:
     m_Data: {fileID: 1544742441, guid: 330c276750dfba3418e9a0d756c9ca7d, type: 3}
   - m_RefCount: 8
     m_Data: {fileID: 1529956043, guid: 330c276750dfba3418e9a0d756c9ca7d, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: -280111203, guid: 330c276750dfba3418e9a0d756c9ca7d, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 2
     m_Data: {fileID: -289443522, guid: 5a4b1598fae7541409c18bb68de5e441, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: -304078, guid: 5a4b1598fae7541409c18bb68de5e441, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: -1633800222, guid: 330c276750dfba3418e9a0d756c9ca7d, type: 3}
+    m_Data: {fileID: -280111203, guid: 330c276750dfba3418e9a0d756c9ca7d, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -1826691995, guid: 330c276750dfba3418e9a0d756c9ca7d, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -1515051269, guid: 330c276750dfba3418e9a0d756c9ca7d, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: -1633800222, guid: 330c276750dfba3418e9a0d756c9ca7d, type: 3}
   - m_RefCount: 10
     m_Data: {fileID: -1735668078, guid: 5a4b1598fae7541409c18bb68de5e441, type: 3}
   - m_RefCount: 4
