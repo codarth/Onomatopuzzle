@@ -120,6 +120,7 @@ public class GridMover : MonoBehaviour
     private void DoChangeFacing()
     {
         facingDirection = (facingDirection == FacingDirection.Right) ? FacingDirection.Left : FacingDirection.Right;
+        FlipSprite(facingDirection);
     }
 
     // Helper to convert enum to vector for internal use
@@ -138,6 +139,18 @@ public class GridMover : MonoBehaviour
             case MovementDirection.Left: return Vector2Int.left;
             case MovementDirection.Right: return Vector2Int.right;
             default: return Vector2Int.zero;
+        }
+    }
+
+    private void FlipSprite(FacingDirection facingDirection)
+    {
+        if (facingDirection.Equals(FacingDirection.Left))
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else
+        {
+            transform.localScale = new Vector3(1, 1, 1);
         }
     }
 
