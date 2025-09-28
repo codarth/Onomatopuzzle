@@ -387,7 +387,17 @@ public class GridMover : MonoBehaviour
         // Use physics overlap to check for colliders at this position
         Collider2D collider = Physics2D.OverlapPoint(worldPos);
     
-        return collider != null && collider.GetComponent<TilemapCollider2D>() != null;
+        // Accept any solid collider, not just TilemapCollider2D
+        if (collider != null)
+        {
+            // Check if it's a trigger - if so, don't consider it blocking
+            if (collider.isTrigger) return false;
+        
+            // Accept any non-trigger collider as blocking
+            return true;
+        }
+    
+        return false;
 
     }
     
