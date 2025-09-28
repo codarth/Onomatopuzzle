@@ -245,6 +245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Explosion
   _tilemap: {fileID: 0}
+  animatedExplosionTile: {fileID: 11400000, guid: a5bbbe89f7332644c8b3c7a917c54dfb, type: 2}
+  explosionAnimationDuration: 1.8
   glorpChance: 0.1
   timeBetreenExplosions: 0.2
 --- !u!95 &1955261223689255067
