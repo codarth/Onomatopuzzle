@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int jumpUpEnergyCost = 3;
     [SerializeField] private int longJumpEnergyCost = 3;
     [SerializeField] private int explosionEnergyCost = 5;
-    
+    [SerializeField] private int zapEnergyCost = 2;
+
     void Awake()
     {
         _mover = GetComponent<GridMover>();
@@ -54,7 +55,13 @@ public class PlayerController : MonoBehaviour
         {
             if (!_globalState.hasEnoughPower(explosionEnergyCost)) return;
             TryExplosion();
+        }        
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            if (!_globalState.hasEnoughPower(zapEnergyCost)) return;
+            TryZap();
         }
+
     }
     
     public void MoveForward()
@@ -102,6 +109,17 @@ public class PlayerController : MonoBehaviour
         if (_mover.TryExplosion())
         {
             _globalState.DecreasePower(explosionEnergyCost);
+            return true;
+        }
+        return false;
+    }
+
+    public bool TryZap()
+    {
+        Debug.Log("Alpha 6 pressed: TryZap()");
+        if (_mover.TryZap())
+        {
+            _globalState.DecreasePower(zapEnergyCost);
             return true;
         }
         return false;

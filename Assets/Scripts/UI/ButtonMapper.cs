@@ -69,4 +69,17 @@ public class ButtonMapper : MonoBehaviour
             Debug.LogError("Player not assigned to Button Mapper in UI");
         }
     }
+    
+    public void Button6()
+    {
+        Debug.Log("Button6 pressed - Zap");
+        if (playerController)
+        {
+            playerController.TryZap();
+        }
+        else
+        {
+            Debug.LogError("Player not assigned to Button Mapper in UI");
+        }
+    }
 }

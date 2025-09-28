@@ -35,7 +35,7 @@ public class GridMover : MonoBehaviour
 
     [Header("References")]
     [Tooltip("Grid or GridLayout that defines the world-to-cell mapping for movement.")]
-    [SerializeField] private GridLayout grid;
+    [SerializeField] public GridLayout grid;
     
     [Header("Movement Settings")]
     [Tooltip("Seconds to move one tile. Lower is faster. 0 snaps instantly.")]
@@ -693,7 +693,52 @@ public class GridMover : MonoBehaviour
         
         return false;
     }
-
+    
+    /// <summary>
+    /// Attempts to perform a "zap" action. If the player is on a platform, 
+    /// triggers the platform's MoveAndReverseDirection coroutine.
+    /// </summary>
+    /// <returns>True if zap was accepted and a platform was triggered; false otherwise.</returns>
+    public bool TryZap()
+    {
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return false;
+        if (_isMoving) return false;
+        if (!_isPlayer) return false; // Only players can zap
+        
+        // Check if player is currently on a platform
+        PlatformController platform = GetPlatformBelow();
+        if (platform != null)
+        {
+            // Trigger the platform's enhanced MoveAndReverseDirection
+            if (platform.TryMoveAndReverseDirection())
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /// <summary>
+    /// Helper method to get the platform controller directly below the player.
+    /// </summary>
+    /// <returns>PlatformController if one exists below, null otherwise.</returns>
+    private PlatformController GetPlatformBelow()
+    {
+        Vector3Int currentCell = CurrentCell;
+        Vector3Int belowCell = currentCell + Vector3Int.down;
+        Vector3 worldPos = grid.CellToWorld(belowCell) + grid.cellSize / 2f;
+        
+        Collider2D collider = Physics2D.OverlapPoint(worldPos);
+        
+        if (collider != null)
+        {
+            PlatformController platform = collider.GetComponentInParent<PlatformController>();
+            return platform;
+        }
+        
+        return null;
+    }
 
     private void OnDestroy()
     {
