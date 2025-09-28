@@ -32,9 +32,7 @@ public class GridMover : MonoBehaviour
     [Header("References")]
     [Tooltip("Grid or GridLayout that defines the world-to-cell mapping for movement.")]
     [SerializeField] private GridLayout grid;
-    [Tooltip("Tilemap used for collision/ground checks. A tile present is treated as blocked/solid.")]
-    [SerializeField] private Tilemap collisionTilemap;
-
+    
     [Header("Movement Settings")]
     [Tooltip("Seconds to move one tile. Lower is faster. 0 snaps instantly.")]
     [SerializeField, Min(0f)] private float stepMoveTime = 0.12f;
@@ -65,6 +63,9 @@ public class GridMover : MonoBehaviour
 
     // Private state
     private bool _isMoving;
+    
+    // Private list to cache tilemaps with colliders
+    private Tilemap[] collisionTilemaps;
 
     /// <summary>
     /// Unity message. Ensures required references are located if not set via the Inspector.
@@ -80,30 +81,24 @@ public class GridMover : MonoBehaviour
                 Debug.LogWarning("GridMover: No Grid found in scene!");
             }
         }
-        
-        // Find collision tilemap if not assigned
-        if (!collisionTilemap)
-        {
-            // Try to find a tilemap with "collision" in the name (case insensitive)
-            Tilemap[] tilemaps = FindObjectsByType<Tilemap>(FindObjectsSortMode.InstanceID);
-            
-            foreach (var tilemap in tilemaps)
-            {
-                if (tilemap.name.ToLower().Contains("collision"))
-                {
-                    collisionTilemap = tilemap;
-                    break;
-                }
-            }
-            
-            // If no collision tilemap found by name, use the first tilemap as fallback
-            if (!collisionTilemap && tilemaps.Length > 0)
-            {
-                collisionTilemap = tilemaps[0];
-                Debug.LogWarning($"GridMover: No 'collision' tilemap found, using '{collisionTilemap.name}' as fallback");
-            }
-        }
+
+        RefreshCollisionTilemaps();
     }
+    
+    private void RefreshCollisionTilemaps()
+    {
+        // Find all GameObjects with both Tilemap and TilemapCollider2D
+        TilemapCollider2D[] colliders = FindObjectsByType<TilemapCollider2D>(FindObjectsSortMode.None);
+        collisionTilemaps = new Tilemap[colliders.Length];
+        
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            collisionTilemaps[i] = colliders[i].GetComponent<Tilemap>();
+        }
+        
+        Debug.Log($"GridMover: Found {collisionTilemaps.Length} tilemaps with colliders");
+    }
+
 
     
     void Reset()
@@ -127,9 +122,9 @@ public class GridMover : MonoBehaviour
     /// Requests a facing change (left/right flip). The command is queued and executed via the movement sequence system.
     /// </summary>
     /// <returns>True if the command was accepted (not already moving and on valid ground), otherwise false.</returns>
-    public bool ChangeFacing()
+    public void ChangeFacing()
     {
-        return TryExecuteSequence(new MoveStep[] {
+        TryExecuteSequence(new MoveStep[] {
             new MoveStep(MoveCommand.Turn)
         });
     }
@@ -139,9 +134,9 @@ public class GridMover : MonoBehaviour
     /// </summary>
     /// <param name="distance">Number of tiles to move forward. Must be >= 1. Defaults to 1.</param>
     /// <returns>True if the move sequence was accepted and will run; false if blocked or already moving.</returns>
-    public bool TryForward(int distance = 1)
+    public void TryForward(int distance = 1)
     {
-        return TryExecuteSequence(new MoveStep[] {
+        TryExecuteSequence(new MoveStep[] {
             new MoveStep(MoveCommand.Forward, distance)
         });
     }
@@ -152,9 +147,9 @@ public class GridMover : MonoBehaviour
     /// </summary>
     /// <param name="height">Number of tiles to jump upward before stepping forward. Must be >= 1.</param>
     /// <returns>True if the move sequence was accepted; false otherwise.</returns>
-    public bool TryJumpUpThenForward(int height)
+    public void TryJumpUpThenForward(int height)
     {
-        return TryExecuteSequence(new MoveStep[] {
+        TryExecuteSequence(new MoveStep[] {
             new MoveStep(MoveCommand.JumpUp, height)
         });
     }
@@ -164,18 +159,61 @@ public class GridMover : MonoBehaviour
     /// </summary>
     /// <param name="distance">Total forward tiles to travel. Must be >= 3.</param>
     /// <returns>True if the move sequence was accepted; false otherwise.</returns>
-    public bool TryJumpForward(int distance)
+    public void TryJumpForward(int distance)
     {
         if (distance < 3)
         {
             Debug.LogWarning("TryJumpForward requires minimum distance of 3");
-            return false;
         }
-        return TryExecuteSequence(new MoveStep[] {
+        TryExecuteSequence(new MoveStep[] {
             new MoveStep(MoveCommand.JumpForward, distance)
         });
     }
 
+    /// <summary>
+    /// Simple directional movement without gravity or collision checks.
+    /// Moves exactly 'distance' tiles in the given direction, using existing MoveOneStep timing.
+    /// Intended for platforms or perfectly placed objects.
+    /// </summary>
+    /// <param name="direction">Desired direction. Will be normalized to a cardinal unit (up/down/left/right).</param>
+    /// <param name="distance">Number of tiles to move. Must be >= 1.</param>
+    /// <returns>True if movement started, false if already moving or invalid args.</returns>
+    public void TryMoveInDirection(Vector2Int direction, int distance)
+    {
+        if (_isMoving) return;
+        if (distance <= 0) return;
+
+        // Normalize to cardinal unit direction
+        Vector2Int unit = new Vector2Int(Mathf.Clamp(direction.x, -1, 1), Mathf.Clamp(direction.y, -1, 1));
+        int sum = Mathf.Abs(unit.x) + Mathf.Abs(unit.y);
+        if (sum != 1)
+        {
+            // Pick dominant axis if diagonal or zero provided
+            if (Mathf.Abs(direction.x) >= Mathf.Abs(direction.y))
+                unit = new Vector2Int(direction.x == 0 ? 0 : (int)Mathf.Sign(direction.x), 0);
+            else
+                unit = new Vector2Int(0, direction.y == 0 ? 0 : (int)Mathf.Sign(direction.y));
+
+            // If still zero, reject
+            if (unit == Vector2Int.zero) return;
+        }
+
+        StartCoroutine(MoveInDirection(unit, distance));
+    }
+
+    // Coroutine that performs simple directional movement without any checks
+    private IEnumerator MoveInDirection(Vector2Int unit, int distance)
+    {
+        _isMoving = true;
+        Vector3Int cell = CurrentCell;
+        for (int i = 0; i < distance; i++)
+        {
+            Vector3Int next = cell + new Vector3Int(unit.x, unit.y, 0);
+            yield return MoveOneStep(cell, next, 0f);
+            cell = next;
+        }
+        _isMoving = false;
+    }
 
 
     // Executes a sequence of high-level movement commands
@@ -184,13 +222,12 @@ public class GridMover : MonoBehaviour
     /// </summary>
     /// <param name="sequence">Array of MoveStep commands (Forward, JumpUp, JumpForward, Turn) in order.</param>
     /// <returns>True if accepted and started; false if invalid, blocked, or already moving.</returns>
-    public bool TryExecuteSequence(MoveStep[] sequence)
+    public void TryExecuteSequence(MoveStep[] sequence)
     {
-        if (_isMoving) return false;
-        if (sequence == null || sequence.Length == 0) return false;
-        if (!HasGroundBelow()) return false;
+        if (_isMoving) return;
+        if (sequence == null || sequence.Length == 0) return;
+        if (!HasGroundBelow()) return;
         StartCoroutine(ExecuteSequence(sequence));
-        return true;
     }
 
     private IEnumerator ExecuteSequence(MoveStep[] sequence)
@@ -277,27 +314,19 @@ public class GridMover : MonoBehaviour
         transform.position = CellCenterWorld(cell);
     }
 
-    /// <summary>
-    /// Instantly teleports the transform to the center of the given cell without animation.
-    /// Triggers OnCellChanged for the destination cell.
-    /// </summary>
-    /// <param name="cell">Target grid cell to warp to.</param>
-    public void WarpToCell(Vector3Int cell)
-    {
-        transform.position = CellCenterWorld(cell);
-        OnCellChanged?.Invoke(cell);
-    }
-
     bool IsBlocked(Vector3Int cell)
     {
-        if (collisionTilemap == null) return false;
-        return collisionTilemap.HasTile(cell);
+        Vector3 worldPos = grid.CellToWorld(cell) + grid.cellSize / 2f;
+    
+        // Use physics overlap to check for colliders at this position
+        Collider2D collider = Physics2D.OverlapPoint(worldPos);
+    
+        return collider != null && collider.GetComponent<TilemapCollider2D>() != null;
 
     }
     
     private bool HasGroundBelow()
     {
-        Debug.Log("executed is tehre something below me");
         return HasGroundBelowAt(CurrentCell);
     }
 
@@ -311,8 +340,19 @@ public class GridMover : MonoBehaviour
     Vector3 CellCenterWorld(Vector3Int cell)
     {
         if (grid == null) return transform.position;
+        
+        // Check if this is a platform (you could add a flag or detect by component)
+        PlatformController platform = GetComponent<PlatformController>();
+        if (platform != null)
+        {
+            // For platforms, align to grid corner instead of center
+            return grid.CellToWorld(cell);
+        }
+        
+        // For regular objects (like player), center in cell
         return grid.CellToWorld(cell) + grid.cellSize / 2f;
     }
+
 
     // Strict corner rule and per-step validation
     private bool CanStep(Vector3Int from, Vector2Int step)
