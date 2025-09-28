@@ -4,6 +4,11 @@ public class ButtonMapper : MonoBehaviour
 {
     public PlayerController playerController;
 
+    private void Start()
+    {
+        playerController = FindAnyObjectByType<PlayerController>();
+    }
+    
     public void Button1()
     {
         Debug.Log("Button1 pressed");
