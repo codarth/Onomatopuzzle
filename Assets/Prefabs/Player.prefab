@@ -62,7 +62,7 @@ MonoBehaviour:
   zapEnergyCost: 2
   moveForwardSfx: {fileID: 0}
   jumpUpSfx: {fileID: 8300000, guid: 040780a902b70404baa0fa224c19f844, type: 3}
-  longJumpSfx: {fileID: 0}
+  longJumpSfx: {fileID: 8300000, guid: 1d20da1506ccec543be19ee673402e49, type: 3}
   changeDirectionSfx: {fileID: 0}
   explodeSfx: {fileID: 8300000, guid: 5cff3cabbb68e864b8092267ceb09173, type: 3}
   zapSfx: {fileID: 0}
