@@ -60,16 +60,16 @@ MonoBehaviour:
   longJumpEnergyCost: 3
   explosionEnergyCost: 5
   zapEnergyCost: 2
-  moveForwardSfx: {fileID: 0}
+  moveForwardSfx: {fileID: 8300000, guid: 9cb37ccb6f949834ea7793ed60bf6c3a, type: 3}
   jumpUpSfx: {fileID: 8300000, guid: 040780a902b70404baa0fa224c19f844, type: 3}
   longJumpSfx: {fileID: 8300000, guid: 1d20da1506ccec543be19ee673402e49, type: 3}
-  changeDirectionSfx: {fileID: 0}
+  changeDirectionSfx: {fileID: 8300000, guid: a6858cd481fab1a40920fab37536ffa5, type: 3}
   explodeSfx: {fileID: 8300000, guid: 5cff3cabbb68e864b8092267ceb09173, type: 3}
-  zapSfx: {fileID: 0}
+  zapSfx: {fileID: 8300000, guid: 0cb0df7971b75e4408f30a898c3fa01c, type: 3}
   batteryEmptySfx: {fileID: 8300000, guid: 434697d56bd5c8e4087256af1ef3815b, type: 3}
-  gameWinSfx: {fileID: 0}
+  gameWinSfx: {fileID: 8300000, guid: 9100cfa469c531b4f964c1a76b613984, type: 3}
   deathSfx: {fileID: 8300000, guid: 434697d56bd5c8e4087256af1ef3815b, type: 3}
-  glorpSfx: {fileID: 0}
+  glorpSfx: {fileID: 8300000, guid: 74476bcc42eade342b1b5d75f7d38638, type: 3}
   nextLevelSfx: {fileID: 0}
 --- !u!114 &8435964990629369730
 MonoBehaviour:

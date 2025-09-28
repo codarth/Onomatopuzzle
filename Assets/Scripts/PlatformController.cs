@@ -55,6 +55,7 @@ public class PlatformController : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.H)) && !isCurrentlyMoving)
         {
             Debug.Log($"Platform {gameObject.name} trying to move {direction}");
+            AudioController.Instance.PlaySFX(PlayerController.Instance.zapSfx);
             TryMoveAndReverseDirection();
         }
 

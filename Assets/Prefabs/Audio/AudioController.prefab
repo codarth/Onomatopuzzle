@@ -177,7 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioController
   musicSource: {fileID: 614664058308216161}
   sfxSource: {fileID: 2425570074499160131}
-  musicVolume: 0.5
+  musicVolume: 0.1
   sfxVolume: 1
   backgroundMusic: {fileID: 8300000, guid: f5d5668034e7444448f948cd33c0af3e, type: 3}
 --- !u!1 &9197060995333484765
