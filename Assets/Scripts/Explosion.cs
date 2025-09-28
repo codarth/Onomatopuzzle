@@ -49,6 +49,7 @@ public class Explosion : MonoBehaviour
             }
 
             _tilemap.SetTile(targetPosition, glorpTile);
+            AudioController.Instance.PlaySFX(PlayerController.Instance.explodeSfx);
 
             foreach (var neighboringPos in GetNeighboringTiles(targetPosition))
             {

@@ -54,6 +54,22 @@ MonoBehaviour:
   forwardDistance: 2
   jumpHeight: 2
   jumpDistance: 3
+  forwardEnergyCost: 1
+  changeFacingEnergyCost: 1
+  jumpUpEnergyCost: 3
+  longJumpEnergyCost: 3
+  explosionEnergyCost: 5
+  zapEnergyCost: 2
+  moveForwardSfx: {fileID: 0}
+  jumpUpSfx: {fileID: 8300000, guid: 040780a902b70404baa0fa224c19f844, type: 3}
+  longJumpSfx: {fileID: 0}
+  changeDirectionSfx: {fileID: 0}
+  explodeSfx: {fileID: 0}
+  zapSfx: {fileID: 0}
+  batteryEmptySfx: {fileID: 0}
+  gameWinSfx: {fileID: 0}
+  deathSfx: {fileID: 0}
+  glorpSfx: {fileID: 0}
 --- !u!114 &8435964990629369730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07aac4539f6dee74cb15529caceee69a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Explosion
+  _tilemap: {fileID: 0}
   glorpChance: 0.1
   timeBetreenExplosions: 0.2
 --- !u!95 &1955261223689255067

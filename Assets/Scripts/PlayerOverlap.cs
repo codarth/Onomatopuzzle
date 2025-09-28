@@ -61,17 +61,20 @@ public class PlayerOverlap : MonoBehaviour
         if (currentSceneIndex < SceneManager.sceneCountInBuildSettings - 1)
         {
             CurrentLevel++;
+            AudioController.Instance.PlaySFX(PlayerController.Instance.nextLevelSfx);
             SceneManager.LoadScene(nextSceneIndex);
         }
         else
         {
             Debug.Log("No more levels to load. You reached the end of the game!");
+            // TODO: Add in end game victory here
         }
     }
 
     void DamagePlayer()
     {
         // Debug.Log("Player takes damage! Implement health reduction here.");
+        AudioController.Instance.PlaySFX(PlayerController.Instance.deathSfx);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

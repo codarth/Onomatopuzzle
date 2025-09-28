@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip gameWinSfx;
     public AudioClip deathSfx;
     public AudioClip glorpSfx;
+    public AudioClip nextLevelSfx;
 
 
     void Awake()
@@ -161,7 +162,7 @@ public class PlayerController : MonoBehaviour
         if (_mover.TryExplosion())
         {
             _globalState.DecreasePower(explosionEnergyCost);
-            AudioController.PlaySFX(explodeSfx);
+            // AudioController.PlaySFX(explodeSfx);
 
             return true;
         }
