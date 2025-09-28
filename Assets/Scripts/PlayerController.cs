@@ -22,9 +22,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int explosionEnergyCost = 5;
     [SerializeField] private int zapEnergyCost = 2;
 
-
-    [Header("Sound Effects")] 
     private AudioController AudioController => AudioController.Instance;
+    [Header("Sound Effects")] 
     public AudioClip moveForwardSfx;
     public AudioClip jumpUpSfx;
     public AudioClip longJumpSfx;

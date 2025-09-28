@@ -52,7 +52,7 @@ public class PlatformController : MonoBehaviour
         UpdateDebugInfo();
         
         // Only allow new movement if not currently moving
-        if (Input.GetKeyDown(KeyCode.Q) && !isCurrentlyMoving)
+        if ((Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.H)) && !isCurrentlyMoving)
         {
             Debug.Log($"Platform {gameObject.name} trying to move {direction}");
             TryMoveAndReverseDirection();
