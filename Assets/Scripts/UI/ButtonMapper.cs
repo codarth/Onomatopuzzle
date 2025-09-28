@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class ButtonMapper : MonoBehaviour
 {
-    public GridMover gridMover;
+    public PlayerController playerController;
 
     public void Button1()
     {
         Debug.Log("Button1 pressed");
-        if (gridMover)
+        if (playerController)
         {
-            gridMover.TryForward();
+            playerController.MoveForward();
         }
         else
         {
@@ -19,8 +19,9 @@ public class ButtonMapper : MonoBehaviour
     public void Button2()
     {
         Debug.Log("Button2 pressed");
-        if (gridMover)
+        if (playerController)
         {
+            playerController.TryJumpAndMoveForward();
         }
         else
         {
@@ -30,8 +31,9 @@ public class ButtonMapper : MonoBehaviour
     public void Button3()
     {
         Debug.Log("Button3 pressed");
-        if (gridMover)
+        if (playerController)
         {
+            playerController.ChangeDirection();
         }
         else
         {
@@ -41,8 +43,9 @@ public class ButtonMapper : MonoBehaviour
     public void Button4()
     {
         Debug.Log("Button4 pressed");
-        if (gridMover)
+        if (playerController)
         {
+            playerController.TryJumpForward();
         }
         else
         {
@@ -52,8 +55,9 @@ public class ButtonMapper : MonoBehaviour
     public void Button5()
     {
         Debug.Log("Button5 pressed");
-        if (gridMover)
+        if (playerController)
         {
+            playerController.DoExplosion();
         }
         else
         {

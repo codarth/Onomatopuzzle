@@ -23,28 +23,52 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Debug.Log("Alpha 1 pressed: TryForward(2)");
-            _mover.TryForward(forwardDistance);
+            MoveForward();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Debug.Log("Alpha 2 pressed: ChangeFacing()");
-            _mover.ChangeFacing();
+            TryJumpAndMoveForward();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            Debug.Log("Alpha 3 pressed: TryJumpUpThenForward(3)");
-            _mover.TryJumpUpThenForward(jumpHeight);
+            ChangeDirection();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            Debug.Log("Alpha 4 pressed: TryJumpForward(4)");
-            _mover.TryJumpForward(jumpDistance);
+            TryJumpForward();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            Debug.Log("Alpha 5 pressed: TryForward()");
-            StartCoroutine(_explosion.DoExplosion(_mover.CurrentCell, _mover.Facing));
+            DoExplosion();
         }
+    }
+    public void MoveForward()
+    {
+        Debug.Log("Alpha 1 pressed: TryForward(2)");
+        _mover.TryForward(forwardDistance);
+    }
+
+    public void ChangeDirection()
+    {
+        Debug.Log("Alpha 2 pressed: ChangeFacing()");
+        _mover.ChangeFacing();
+    }
+
+    public void TryJumpAndMoveForward()
+    {
+        Debug.Log("Alpha 3 pressed: TryJumpUpThenForward(3)");
+        _mover.TryJumpUpThenForward(jumpHeight);
+    }
+
+    public void TryJumpForward()
+    {
+        Debug.Log("Alpha 4 pressed: TryJumpForward(4)");
+        _mover.TryJumpForward(jumpDistance);
+    }
+
+    public void DoExplosion()
+    {
+        Debug.Log("Alpha 5 pressed: TryForward()");
+        StartCoroutine(_explosion.DoExplosion(_mover.CurrentCell, _mover.Facing));
     }
 }
