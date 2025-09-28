@@ -11,7 +11,7 @@ namespace TileScripts
         public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
         {
             tileData.sprite = sprite;
-            tileData.colliderType = Tile.ColliderType.None;
+            tileData.colliderType = Tile.ColliderType.Sprite;
         }
     }
 }
