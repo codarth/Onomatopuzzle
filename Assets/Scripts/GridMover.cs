@@ -35,7 +35,7 @@ public class GridMover : MonoBehaviour
 
     [Header("References")]
     [Tooltip("Grid or GridLayout that defines the world-to-cell mapping for movement.")]
-    [SerializeField] private GridLayout grid;
+    [SerializeField] public GridLayout grid;
     
     [Header("Movement Settings")]
     [Tooltip("Seconds to move one tile. Lower is faster. 0 snaps instantly.")]
@@ -167,31 +167,48 @@ public class GridMover : MonoBehaviour
         }
     }
 
-    // Public wrapper now routes through the sequence system
     /// <summary>
     /// Requests a facing change (left/right flip). The command is queued and executed via the movement sequence system.
     /// </summary>
     /// <returns>True if the command was accepted (not already moving and on valid ground), otherwise false.</returns>
-    public void ChangeFacing()
+    public bool ChangeFacing()
     {
-        if (_anyGridMoverMoving && _currentMovingGridMover != this) return;
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return false;
+        if (!HasGroundBelow()) return false;
         TryExecuteSequence(new MoveStep[] {
             new MoveStep(MoveCommand.Turn)
         });
+        return true;
     }
+
 
     /// <summary>
     /// Attempts to move forward along the current facing direction by the specified number of tiles.
     /// </summary>
     /// <param name="distance">Number of tiles to move forward. Must be >= 1. Defaults to 1.</param>
     /// <returns>True if the move sequence was accepted and will run; false if blocked or already moving.</returns>
-    public void TryForward(int distance = 1)
+    public bool TryForward(int distance = 1)
     {
-        if (_anyGridMoverMoving && _currentMovingGridMover != this) return;
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return false;
+        if (!HasGroundBelow()) return false;
+        
+        // Check if the first forward step is possible
+        Vector2Int facingDir = GetFacingVector();
+        Vector3Int currentCell = CurrentCell;
+        Vector3Int firstStep = currentCell + new Vector3Int(facingDir.x, facingDir.y, 0);
+        
+        if (!CanStep(currentCell, facingDir))
+        {
+            return false;
+        }
+        
         TryExecuteSequence(new MoveStep[] {
             new MoveStep(MoveCommand.Forward, distance)
         });
+        return true;
     }
+
+
 
     /// <summary>
     /// Attempts to jump straight up by a number of tiles, then move forward one tile in the current facing.
@@ -199,30 +216,60 @@ public class GridMover : MonoBehaviour
     /// </summary>
     /// <param name="height">Number of tiles to jump upward before stepping forward. Must be >= 1.</param>
     /// <returns>True if the move sequence was accepted; false otherwise.</returns>
-    public void TryJumpUpThenForward(int height)
+    public bool TryJumpUpThenForward(int height)
     {
-        if (_anyGridMoverMoving && _currentMovingGridMover != this) return;
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return false;
+        if (!HasGroundBelow()) return false;
+        
+        // Check if the first upward step is possible
+        Vector3Int currentCell = CurrentCell;
+        Vector3Int firstStep = currentCell + Vector3Int.up;
+        
+        if (!CanStep(currentCell, Vector2Int.up))
+        {
+            return false;
+        }
+        
         TryExecuteSequence(new MoveStep[] {
             new MoveStep(MoveCommand.JumpUp, height)
         });
+        return true;
     }
+
+
 
     /// <summary>
     /// Attempts to jump forward in a shallow arc. First step is up-forward, last step is down-forward.
     /// </summary>
     /// <param name="distance">Total forward tiles to travel. Must be >= 3.</param>
     /// <returns>True if the move sequence was accepted; false otherwise.</returns>
-    public void TryJumpForward(int distance)
+    public bool TryJumpForward(int distance)
     {
-        if (_anyGridMoverMoving && _currentMovingGridMover != this) return;
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return false;
+        if (!HasGroundBelow()) return false;
         if (distance < 3)
         {
             Debug.LogWarning("TryJumpForward requires minimum distance of 3");
+            return false;
         }
+        
+        // Check if the first diagonal up-forward step is possible
+        Vector2Int facingDir = GetFacingVector();
+        Vector2Int firstStep = new Vector2Int(facingDir.x, 1); // forward + up
+        Vector3Int currentCell = CurrentCell;
+        
+        if (!CanStep(currentCell, firstStep))
+        {
+            return false;
+        }
+        
         TryExecuteSequence(new MoveStep[] {
             new MoveStep(MoveCommand.JumpForward, distance)
         });
+        return true;
     }
+
+
 
     /// <summary>
     /// Simple directional movement without gravity or collision checks.
@@ -282,14 +329,16 @@ public class GridMover : MonoBehaviour
     /// </summary>
     /// <param name="sequence">Array of MoveStep commands (Forward, JumpUp, JumpForward, Turn) in order.</param>
     /// <returns>True if accepted and started; false if invalid, blocked, or already moving.</returns>
-    public void TryExecuteSequence(MoveStep[] sequence)
+    public bool TryExecuteSequence(MoveStep[] sequence)
     {
-        if (_anyGridMoverMoving && _currentMovingGridMover != this) return;
-        if (_isMoving) return;
-        if (sequence == null || sequence.Length == 0) return;
-        if (!HasGroundBelow()) return;
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return false;
+        if (_isMoving) return false;
+        if (sequence == null || sequence.Length == 0) return false;
+        if (!HasGroundBelow()) return false;
         StartCoroutine(ExecuteSequence(sequence));
+        return true;
     }
+
 
     private IEnumerator ExecuteSequence(MoveStep[] sequence)
     {
@@ -387,7 +436,17 @@ public class GridMover : MonoBehaviour
         // Use physics overlap to check for colliders at this position
         Collider2D collider = Physics2D.OverlapPoint(worldPos);
     
-        return collider != null && collider.GetComponent<TilemapCollider2D>() != null;
+        // Accept any solid collider, not just TilemapCollider2D
+        if (collider != null)
+        {
+            // Check if it's a trigger - if so, don't consider it blocking
+            if (collider.isTrigger) return false;
+        
+            // Accept any non-trigger collider as blocking
+            return true;
+        }
+    
+        return false;
 
     }
     
@@ -611,6 +670,74 @@ public class GridMover : MonoBehaviour
                 _currentPlatformParent = null;
             }
         }
+    }
+    
+    /// <summary>
+    /// Attempts to perform an explosion in the facing direction.
+    /// Respects the global movement lock to ensure explosions don't interfere with movement.
+    /// </summary>
+    /// <returns>True if explosion was accepted and will start; false if blocked by movement lock.</returns>
+    public bool TryExplosion()
+    {
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return false;
+        if (_isMoving) return false;
+        
+        // Explosion doesn't need ground validation - can explode in air
+        // Get the explosion component and start the explosion
+        Explosion explosion = GetComponent<Explosion>();
+        if (explosion != null)
+        {
+            StartCoroutine(explosion.DoExplosion(CurrentCell, Facing));
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /// <summary>
+    /// Attempts to perform a "zap" action. If the player is on a platform, 
+    /// triggers the platform's MoveAndReverseDirection coroutine.
+    /// </summary>
+    /// <returns>True if zap was accepted and a platform was triggered; false otherwise.</returns>
+    public bool TryZap()
+    {
+        if (_anyGridMoverMoving && _currentMovingGridMover != this) return false;
+        if (_isMoving) return false;
+        if (!_isPlayer) return false; // Only players can zap
+        
+        // Check if player is currently on a platform
+        PlatformController platform = GetPlatformBelow();
+        if (platform != null)
+        {
+            // Trigger the platform's enhanced MoveAndReverseDirection
+            if (platform.TryMoveAndReverseDirection())
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /// <summary>
+    /// Helper method to get the platform controller directly below the player.
+    /// </summary>
+    /// <returns>PlatformController if one exists below, null otherwise.</returns>
+    private PlatformController GetPlatformBelow()
+    {
+        Vector3Int currentCell = CurrentCell;
+        Vector3Int belowCell = currentCell + Vector3Int.down;
+        Vector3 worldPos = grid.CellToWorld(belowCell) + grid.cellSize / 2f;
+        
+        Collider2D collider = Physics2D.OverlapPoint(worldPos);
+        
+        if (collider != null)
+        {
+            PlatformController platform = collider.GetComponentInParent<PlatformController>();
+            return platform;
+        }
+        
+        return null;
     }
 
     private void OnDestroy()

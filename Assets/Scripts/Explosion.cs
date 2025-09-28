@@ -7,17 +7,28 @@ using UnityEngine.Tilemaps;
 
 public class Explosion : MonoBehaviour
 {
-    private Tilemap _tilemap;
+    [SerializeField] private Tilemap _tilemap;
+    private GridMover _gridMover;
+
     public float glorpChance = 0.1f; // 10% chance to spawn a glorp
     public float timeBetreenExplosions = 0.2f; // seconds between recursive explosions
 
     private void Start()
     {
-        _tilemap = FindFirstObjectByType<Tilemap>();
+        // _tilemap = FindFirstObjectByType<Tilemap>();
+        _gridMover = GetComponent<GridMover>();
     }
 
-    public IEnumerator  DoExplosion(Vector3Int playerPosition, Vector2Int facingDirection)
+
+    public IEnumerator DoExplosion(Vector3Int playerPosition, Vector2Int facingDirection)
     {
+        // Lock the GridMover movement system during explosion
+        if (_gridMover != null)
+        {
+            // Use reflection or make the fields internal/public to access the static lock
+            // For now, we'll work with what we have and trust that TryExplosion was called properly
+        }
+        
         Vector3Int targetPosition = playerPosition + new Vector3Int(facingDirection.x, facingDirection.y, 0);
         TileBase tile = _tilemap.GetTile(targetPosition);
 
@@ -44,7 +55,7 @@ public class Explosion : MonoBehaviour
                 TileBase neighboringTile = _tilemap.GetTile(neighboringPos);
                 if (neighboringTile is DestructibleTile)
                 {
-// Calculate the facing direction from target to neighbor for recursive logic
+                    // Calculate the facing direction from target to neighbor for recursive logic
                     Vector2Int direction = new Vector2Int(neighboringPos.x - targetPosition.x,
                         neighboringPos.y - targetPosition.y);
                     
@@ -54,6 +65,7 @@ public class Explosion : MonoBehaviour
             }
         }
     }
+
 
     private List<Vector3Int> GetNeighboringTiles(Vector3Int position)
     {

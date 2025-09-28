@@ -38,7 +38,6 @@ public class PlatformController : MonoBehaviour
         {
             Debug.LogError("No SpriteRenderer found on children of " + gameObject.name);
         }
-
     }
 
     private void Update()
@@ -48,7 +47,7 @@ public class PlatformController : MonoBehaviour
         // Only allow new movement if not currently moving
         if (Input.GetKeyDown(KeyCode.Q) && !isCurrentlyMoving)
         {
-            StartCoroutine(MoveAndReverseDirection());
+            TryMoveAndReverseDirection();
         }
 
         if (isCurrentlyMoving)
@@ -59,6 +58,32 @@ public class PlatformController : MonoBehaviour
         {
             _sr.sprite = idleSprite;
         }
+    }
+
+    /// <summary>
+    /// Attempts to move the platform and reverse its direction.
+    /// Follows the same pattern as other "Try" methods with validation and boolean return.
+    /// </summary>
+    /// <returns>True if the movement was accepted and started; false if blocked or already moving.</returns>
+    public bool TryMoveAndReverseDirection()
+    {
+        if (gridMover == null) return false;
+        if (isCurrentlyMoving) return false;
+        if (GridMover.IsAnyGridMoverMoving) return false;
+        
+        // Check if the first step in the direction is possible
+        Vector2Int directionVector = GridMover.GetDirectionVector(direction);
+        Vector3Int currentCell = gridMover.CurrentCell;
+        Vector3Int firstStep = currentCell + new Vector3Int(directionVector.x, directionVector.y, 0);
+        
+        // Use basic collision check - platforms don't use the same CanStep logic as players
+        if (IsBlocked(firstStep))
+        {
+            return false;
+        }
+        
+        StartCoroutine(MoveAndReverseDirection());
+        return true;
     }
 
     private System.Collections.IEnumerator MoveAndReverseDirection()
@@ -97,5 +122,23 @@ public class PlatformController : MonoBehaviour
                 direction = GridMover.MovementDirection.Left;
                 break;
         }
+    }
+    
+    /// <summary>
+    /// Simple collision check for platforms - just checks if a cell is blocked.
+    /// </summary>
+    /// <param name="cell">The cell to check</param>
+    /// <returns>True if blocked, false if clear</returns>
+    private bool IsBlocked(Vector3Int cell)
+    {
+        Vector3 worldPos = gridMover.grid.CellToWorld(cell) + gridMover.grid.cellSize / 2f;
+        Collider2D collider = Physics2D.OverlapPoint(worldPos);
+        
+        if (collider != null && !collider.isTrigger)
+        {
+            return true;
+        }
+        
+        return false;
     }
 }

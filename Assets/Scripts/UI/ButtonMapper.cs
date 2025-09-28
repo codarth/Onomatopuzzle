@@ -4,6 +4,11 @@ public class ButtonMapper : MonoBehaviour
 {
     public PlayerController playerController;
 
+    private void Start()
+    {
+        playerController = FindAnyObjectByType<PlayerController>();
+    }
+    
     public void Button1()
     {
         Debug.Log("Button1 pressed");
@@ -57,7 +62,20 @@ public class ButtonMapper : MonoBehaviour
         Debug.Log("Button5 pressed");
         if (playerController)
         {
-            playerController.DoExplosion();
+            playerController.TryExplosion();
+        }
+        else
+        {
+            Debug.LogError("Player not assigned to Button Mapper in UI");
+        }
+    }
+    
+    public void Button6()
+    {
+        Debug.Log("Button6 pressed - Zap");
+        if (playerController)
+        {
+            playerController.TryZap();
         }
         else
         {

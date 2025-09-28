@@ -21,9 +21,6 @@ public class GlobalState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(power <= 0) {
-            RestartLevel();
-        }
     }
 
     private void RestartLevel()
@@ -31,5 +28,15 @@ public class GlobalState : MonoBehaviour
         Debug.Log("Restarting Level");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         power = 100;
+    }
+    
+    public bool hasEnoughPower(int amount)
+    {
+        return power >= amount;
+    }
+    
+    public void DecreasePower(int amount)
+    {
+        power = power - amount;
     }
 }
