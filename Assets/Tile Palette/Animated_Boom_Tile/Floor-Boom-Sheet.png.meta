@@ -1,0 +1,447 @@
+fileFormatVersion: 2
+guid: 11d1921103f249041b34b8f32ebaa895
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3137335850707867787
+    second: Floor-Boom-Sheet_0
+  - first:
+      213: 278476255244400669
+    second: Floor-Boom-Sheet_1
+  - first:
+      213: -4298813568383182738
+    second: Floor-Boom-Sheet_2
+  - first:
+      213: -5135937318385531086
+    second: Floor-Boom-Sheet_3
+  - first:
+      213: 3121431996807032241
+    second: Floor-Boom-Sheet_4
+  - first:
+      213: -6794151122159970860
+    second: Floor-Boom-Sheet_5
+  - first:
+      213: -7462543787182153599
+    second: Floor-Boom-Sheet_6
+  - first:
+      213: 3381042321189442338
+    second: Floor-Boom-Sheet_7
+  - first:
+      213: 3987015418517728077
+    second: Floor-Boom-Sheet_8
+  - first:
+      213: -6164665456173987975
+    second: Floor-Boom-Sheet_9
+  - first:
+      213: 4958502565282693865
+    second: Floor-Boom-Sheet_10
+  - first:
+      213: 4640820795305487026
+    second: Floor-Boom-Sheet_11
+  - first:
+      213: 7933474148996235111
+    second: Floor-Boom-Sheet_12
+  - first:
+      213: 2731889157028667595
+    second: Floor-Boom-Sheet_13
+  - first:
+      213: 2007841017802549609
+    second: Floor-Boom-Sheet_14
+  - first:
+      213: -4476718798098791859
+    second: Floor-Boom-Sheet_15
+  - first:
+      213: 5869775781303204527
+    second: Floor-Boom-Sheet_16
+  - first:
+      213: 5978947786401192851
+    second: Floor-Boom-Sheet_17
+  - first:
+      213: -2054535895632031612
+    second: Floor-Boom-Sheet_18
+  - first:
+      213: 1078540418174492451
+    second: Floor-Boom-Sheet_19
+  - first:
+      213: -7370076610809279481
+    second: Floor-Boom-Sheet_20
+  - first:
+      213: -1858499756172091421
+    second: Floor-Boom-Sheet_21
+  - first:
+      213: 3687136961775598957
+    second: Floor-Boom-Sheet_22
+  - first:
+      213: -8688756272788076796
+    second: Floor-Boom-Sheet_23
+  - first:
+      213: -6167617002807217917
+    second: Floor-Boom-Sheet_24
+  - first:
+      213: 9013896411848399682
+    second: Floor-Boom-Sheet_25
+  - first:
+      213: -8604183853656194330
+    second: Floor-Boom-Sheet_26
+  - first:
+      213: -6392214885449105448
+    second: Floor-Boom-Sheet_27
+  - first:
+      213: 1561808515426439397
+    second: Floor-Boom-Sheet_28
+  - first:
+      213: -7396917391671856809
+    second: Floor-Boom-Sheet_29
+  - first:
+      213: -4926335217604583945
+    second: Floor-Boom-Sheet_30
+  - first:
+      213: 1121591071280941351
+    second: Floor-Boom-Sheet_31
+  - first:
+      213: 5668677856287763949
+    second: Floor-Boom-Sheet_32
+  - first:
+      213: 2597963278268887857
+    second: Floor-Boom-Sheet_33
+  - first:
+      213: 3924883512729481368
+    second: Floor-Boom-Sheet_34
+  - first:
+      213: -7570542947392745512
+    second: Floor-Boom-Sheet_35
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Floor-Boom-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b885a8a755e0a8b20800000000000000
+      internalID: 3137335850707867787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floor-Boom-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 14
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: badf43024f87d0541ac324d7772352e7
+      internalID: 278476255244400669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floor-Boom-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 13
+        width: 21
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc05736e48df9234a875de4b8e0f9d45
+      internalID: -4298813568383182738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floor-Boom-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 11
+        width: 27
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c7aefc79a780c14ebfdc490f2ef4c9c
+      internalID: -5135937318385531086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floor-Boom-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 14
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 628832830d094bc44b9b531933fe9bad
+      internalID: 3121431996807032241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floor-Boom-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 14
+        width: 26
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b36bc20b3271cb24c94bcd9bef681266
+      internalID: -6794151122159970860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floor-Boom-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 15
+        width: 27
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 929c7371b2505264db15ffbca0adee4b
+      internalID: -7462543787182153599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floor-Boom-Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 15
+        width: 31
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5eaed348ef773334f8d51b3dbf33d93d
+      internalID: 3381042321189442338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floor-Boom-Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 15
+        width: 27
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a84797b43d43e24b985a363697ff577
+      internalID: 3987015418517728077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: c5bfecd81d62bd84b870f38dd00e0f15
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":48.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Floor-Boom-Sheet_0: 3137335850707867787
+      Floor-Boom-Sheet_1: 278476255244400669
+      Floor-Boom-Sheet_2: -4298813568383182738
+      Floor-Boom-Sheet_3: -5135937318385531086
+      Floor-Boom-Sheet_4: 3121431996807032241
+      Floor-Boom-Sheet_5: -6794151122159970860
+      Floor-Boom-Sheet_6: -7462543787182153599
+      Floor-Boom-Sheet_7: 3381042321189442338
+      Floor-Boom-Sheet_8: 3987015418517728077
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
