@@ -49,12 +49,24 @@ public class PlayerOverlap : MonoBehaviour
                 Debug.Log("Player overlapped the Glorp Tile!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 AudioController.Instance.PlaySFX(PlayerController.Instance.glorpSfx);
                 _tilemap.SetTile(_tilemap.WorldToCell(transform.position), null);
+                
+                // Add glorp to score
+                if (GlobalState.Instance != null)
+                {
+                    GlobalState.Instance.CollectGlorp();
+                }
             }
         }
     }
 
     void LoadNextLevel()
     {
+        // Calculate and log the level score before moving to next level
+        if (GlobalState.Instance != null)
+        {
+            GlobalState.Instance.CalculateLevelScore();
+        }
+        
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
 
@@ -67,9 +79,15 @@ public class PlayerOverlap : MonoBehaviour
         else
         {
             Debug.Log("No more levels to load. You reached the end of the game!");
+            // Show final total score
+            if (GlobalState.Instance != null)
+            {
+                Debug.Log($"Final Total Score: {GlobalState.Instance.GetTotalScore()}");
+            }
             // TODO: Add in end game victory here
         }
     }
+
 
     void DamagePlayer()
     {

@@ -4,7 +4,7 @@ public class PlatformController : MonoBehaviour
 {
     [Header("Platform Movement Settings")]
     [Tooltip("Direction to move when pressing Q. Cardinal directions recommended (up/down/left/right).")]
-    [SerializeField] private GridMover.MovementDirection direction = default;
+    [SerializeField] private GridMover.MovementDirection direction = GridMover.MovementDirection.Right;
 
     [Tooltip("How many tiles to move in the configured direction when pressing Q.")]
     [SerializeField, Min(1)] private int distance = 1;
@@ -22,15 +22,16 @@ public class PlatformController : MonoBehaviour
     
     private SpriteRenderer _sr;
 
+    // Debug field to show current direction in inspector
+    [Header("Debug Info")]
+    [SerializeField, Tooltip("Shows the current movement direction (read-only)")] 
+    private string currentDirection;
+
     private void Awake()
     {
         if (gridMover == null)
         {
             gridMover = GetComponent<GridMover>();
-        }
-        if (direction == default)
-        {
-            direction = GridMover.MovementDirection.Right; // default per requirements
         }
         
         _sr = GetComponentInChildren<SpriteRenderer>();
@@ -38,15 +39,22 @@ public class PlatformController : MonoBehaviour
         {
             Debug.LogError("No SpriteRenderer found on children of " + gameObject.name);
         }
+
+        // Update debug info
+        UpdateDebugInfo();
     }
 
     private void Update()
     {
         if (gridMover == null) return;
         
+        // Update debug info if direction changed
+        UpdateDebugInfo();
+        
         // Only allow new movement if not currently moving
         if (Input.GetKeyDown(KeyCode.Q) && !isCurrentlyMoving)
         {
+            Debug.Log($"Platform {gameObject.name} trying to move {direction}");
             TryMoveAndReverseDirection();
         }
 
@@ -58,6 +66,11 @@ public class PlatformController : MonoBehaviour
         {
             _sr.sprite = idleSprite;
         }
+    }
+
+    private void UpdateDebugInfo()
+    {
+        currentDirection = direction.ToString();
     }
 
     /// <summary>
@@ -76,11 +89,7 @@ public class PlatformController : MonoBehaviour
         Vector3Int currentCell = gridMover.CurrentCell;
         Vector3Int firstStep = currentCell + new Vector3Int(directionVector.x, directionVector.y, 0);
         
-        // Use basic collision check - platforms don't use the same CanStep logic as players
-        if (IsBlocked(firstStep))
-        {
-            return false;
-        }
+        Debug.Log($"Platform {gameObject.name} moving from {currentCell} to {firstStep} (direction: {direction})");
         
         StartCoroutine(MoveAndReverseDirection());
         return true;
@@ -100,7 +109,9 @@ public class PlatformController : MonoBehaviour
         }
         
         // Reverse the direction after movement completes
+        GridMover.MovementDirection oldDirection = direction;
         ReverseDirection();
+        Debug.Log($"Platform {gameObject.name} reversed direction: {oldDirection} -> {direction}");
         
         isCurrentlyMoving = false;
     }
@@ -122,23 +133,5 @@ public class PlatformController : MonoBehaviour
                 direction = GridMover.MovementDirection.Left;
                 break;
         }
-    }
-    
-    /// <summary>
-    /// Simple collision check for platforms - just checks if a cell is blocked.
-    /// </summary>
-    /// <param name="cell">The cell to check</param>
-    /// <returns>True if blocked, false if clear</returns>
-    private bool IsBlocked(Vector3Int cell)
-    {
-        Vector3 worldPos = gridMover.grid.CellToWorld(cell) + gridMover.grid.cellSize / 2f;
-        Collider2D collider = Physics2D.OverlapPoint(worldPos);
-        
-        if (collider != null && !collider.isTrigger)
-        {
-            return true;
-        }
-        
-        return false;
     }
 }
