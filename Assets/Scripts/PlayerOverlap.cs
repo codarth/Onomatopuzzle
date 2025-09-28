@@ -5,14 +5,14 @@ using UnityEngine.Tilemaps;
 
 public class PlayerOverlap : MonoBehaviour
 {
-    private Tilemap _tilemap;
+    [SerializeField] private Tilemap _tilemap;
     private WinningTile _winningTile;
     private DamageTile _damageTile;
     private GlorpTile _glorpTile;
 
     private void Start()
     {
-        _tilemap = FindFirstObjectByType<Tilemap>();
+        // _tilemap = FindFirstObjectByType<Tilemap>();
         if (_tilemap == null) Debug.Log("tilemap not set in PlayerOverlap");
         // get winningTile by path
 
@@ -28,25 +28,27 @@ public class PlayerOverlap : MonoBehaviour
         {
             Vector3Int playerCellPos = _tilemap.WorldToCell(transform.position);
             TileBase tile = _tilemap.GetTile(playerCellPos);
+        Debug.Log(_tilemap.name);
+        Debug.Log(tile.name);
 
             if (tile == _winningTile)
+        {
+            //Debug.Log("Player overlapped the Winning Tile!");
+            LoadNextLevel();
+        }
+        else if (tile == _damageTile)
+        {
+            // Debug.Log("Player overlapped the Damage Tile!");
+            DamagePlayer();
+        }
+        else if (_glorpTile)
+        {
+            if (tile == _glorpTile)
             {
-                //Debug.Log("Player overlapped the Winning Tile!");
-                LoadNextLevel();
+                Debug.Log("Player overlapped the Glorp Tile!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                _tilemap.SetTile(_tilemap.WorldToCell(transform.position), null);
             }
-            else if (tile == _damageTile)
-            {
-                // Debug.Log("Player overlapped the Damage Tile!");
-                DamagePlayer();
-            }
-            else if (_glorpTile)
-            {
-                if (tile == _glorpTile)
-                {
-                    Debug.Log("Player overlapped the Glorp Tile!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    _tilemap.SetTile(_tilemap.WorldToCell(transform.position), null);
-                }
-            }
+        }
         }
 
         void LoadNextLevel()

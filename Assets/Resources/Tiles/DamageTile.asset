@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 140176443d8432341bc8ec373d85d96a, type: 3}
   m_Name: DamageTile
   m_EditorClassIdentifier: Assembly-CSharp::TileScripts.DamageTile
-  sprite: {fileID: 515933836, guid: 0ce6c8467cfdf764fb86c9d503af08c4, type: 3}
+  sprite: {fileID: -296285801, guid: 330c276750dfba3418e9a0d756c9ca7d, type: 3}

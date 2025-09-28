@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21e31b5fbe35134ebd2df0899555558, type: 3}
   m_Name: WinningTile
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
-  sprite: {fileID: -2090242879, guid: 0ce6c8467cfdf764fb86c9d503af08c4, type: 3}
+  sprite: {fileID: -8650707005134616195, guid: 330c276750dfba3418e9a0d756c9ca7d, type: 3}

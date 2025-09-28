@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e712cd9f0169b438df19695865773a, type: 3}
   m_Name: DestructibleTile
   m_EditorClassIdentifier: Assembly-CSharp::TileScripts.DestructibleTile
-  sprite: {fileID: -2045150464, guid: 0ce6c8467cfdf764fb86c9d503af08c4, type: 3}
+  sprite: {fileID: 2127311992, guid: 330c276750dfba3418e9a0d756c9ca7d, type: 3}
