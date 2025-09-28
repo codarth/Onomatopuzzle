@@ -25,13 +25,11 @@ public class PlayerOverlap : MonoBehaviour
     }
 
     private void Update()
-        {
-            Vector3Int playerCellPos = _tilemap.WorldToCell(transform.position);
-            TileBase tile = _tilemap.GetTile(playerCellPos);
-        Debug.Log(_tilemap.name);
-        Debug.Log(tile.name);
+    {
+        Vector3Int playerCellPos = _tilemap.WorldToCell(transform.position);
+        TileBase tile = _tilemap.GetTile(playerCellPos);
 
-            if (tile == _winningTile)
+        if (tile == _winningTile)
         {
             //Debug.Log("Player overlapped the Winning Tile!");
             LoadNextLevel();
@@ -49,26 +47,26 @@ public class PlayerOverlap : MonoBehaviour
                 _tilemap.SetTile(_tilemap.WorldToCell(transform.position), null);
             }
         }
-        }
+    }
 
-        void LoadNextLevel()
+    void LoadNextLevel()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = currentSceneIndex + 1;
+
+        if (currentSceneIndex < SceneManager.sceneCountInBuildSettings - 1)
         {
-            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            int nextSceneIndex = currentSceneIndex + 1;
-
-            if (currentSceneIndex < SceneManager.sceneCountInBuildSettings - 1)
-            {
-                SceneManager.LoadScene(nextSceneIndex);
-            }
-            else
-            {
-                Debug.Log("No more levels to load. You reached the end of the game!");
-            }
+            SceneManager.LoadScene(nextSceneIndex);
         }
-
-        void DamagePlayer()
+        else
         {
-            // Debug.Log("Player takes damage! Implement health reduction here.");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Debug.Log("No more levels to load. You reached the end of the game!");
         }
+    }
+
+    void DamagePlayer()
+    {
+        // Debug.Log("Player takes damage! Implement health reduction here.");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }

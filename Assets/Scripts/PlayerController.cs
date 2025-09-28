@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             Debug.Log("Alpha 5 pressed: TryForward()");
-            _explosion.DoExplosion(_mover.CurrentCell, _mover.Facing);
+            StartCoroutine(_explosion.DoExplosion(_mover.CurrentCell, _mover.Facing));
         }
     }
 }
