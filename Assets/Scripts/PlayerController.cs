@@ -6,18 +6,32 @@ public class PlayerController : MonoBehaviour
     private GridMover _mover;
     private Explosion _explosion;
     private GlobalState _globalState;
-    
+
     [SerializeField] private int forwardDistance = 1;
     [SerializeField] private int jumpHeight = 2;
     [SerializeField] private int jumpDistance = 3;
-    
-    [Header("Energy Costs")]
-    [SerializeField] private int forwardEnergyCost = 1;
+
+    [Header("Energy Costs")] [SerializeField]
+    private int forwardEnergyCost = 1;
+
     [SerializeField] private int changeFacingEnergyCost = 1;
     [SerializeField] private int jumpUpEnergyCost = 3;
     [SerializeField] private int longJumpEnergyCost = 3;
     [SerializeField] private int explosionEnergyCost = 5;
     [SerializeField] private int zapEnergyCost = 2;
+
+
+    [Header("Sound Effects")] private AudioController AudioController => AudioController.Instance;
+    [SerializeField] private AudioClip moveForwardSfx;
+    [SerializeField] private AudioClip jumpUpSfx;
+    [SerializeField] private AudioClip longJumpSfx;
+    [SerializeField] private AudioClip changeDirectionSfx;
+    [SerializeField] private AudioClip explodeSfx;
+    [SerializeField] private AudioClip zapSfx;
+    [SerializeField] private AudioClip batteryEmptySfx;
+    [SerializeField] private AudioClip gameWinSfx;
+    [SerializeField] private AudioClip deathSfx;
+
 
     void Awake()
     {
@@ -34,46 +48,75 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (!_globalState.hasEnoughPower(forwardEnergyCost)) return;
+            if (!_globalState.hasEnoughPower(forwardEnergyCost))
+            {
+                AudioController.PlaySFX(batteryEmptySfx);
+                return;
+            }
+
             MoveForward();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (!_globalState.hasEnoughPower(changeFacingEnergyCost)) return;
+            if (!_globalState.hasEnoughPower(changeFacingEnergyCost))
+            {
+                AudioController.PlaySFX(batteryEmptySfx);
+                return;
+            }
+
             TryJumpAndMoveForward();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) && CurrentLevel > 0)
         {
             Debug.Log("CurrentLevel is " + CurrentLevel);
-            if (!_globalState.hasEnoughPower(jumpUpEnergyCost)) return;
+            if (!_globalState.hasEnoughPower(jumpUpEnergyCost))
+            {
+                AudioController.PlaySFX(batteryEmptySfx);
+                return;
+            }
+
             ChangeDirection();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4) && CurrentLevel > 1)
         {
-            if (!_globalState.hasEnoughPower(longJumpEnergyCost)) return;
+            if (!_globalState.hasEnoughPower(longJumpEnergyCost))
+            {
+                AudioController.PlaySFX(batteryEmptySfx);
+                return;
+            }
+
             TryJumpForward();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5) && CurrentLevel < 2)
         {
-            if (!_globalState.hasEnoughPower(explosionEnergyCost)) return;
+            if (!_globalState.hasEnoughPower(explosionEnergyCost))
+            {
+                AudioController.PlaySFX(batteryEmptySfx);
+                return;
+            }
+
             TryExplosion();
-        }        
+        }
         else if (Input.GetKeyDown(KeyCode.Alpha6) && CurrentLevel < 3)
         {
-            if (!_globalState.hasEnoughPower(zapEnergyCost)) return;
+            if (!_globalState.hasEnoughPower(zapEnergyCost))
+            {
+                AudioController.PlaySFX(batteryEmptySfx);
+                return;
+            }
+
             TryZap();
         }
-
     }
-    
+
     public void MoveForward()
     {
         Debug.Log("Alpha 1 pressed: TryForward(2)");
         if (_mover.TryForward(forwardDistance))
         {
             _globalState.DecreasePower(forwardEnergyCost);
+            AudioController.PlaySFX(moveForwardSfx);
         }
-
     }
 
     public void ChangeDirection()
@@ -82,6 +125,7 @@ public class PlayerController : MonoBehaviour
         if (_mover.ChangeFacing())
         {
             _globalState.DecreasePower(changeFacingEnergyCost);
+            AudioController.PlaySFX(changeDirectionSfx);
         }
     }
 
@@ -91,8 +135,8 @@ public class PlayerController : MonoBehaviour
         if (_mover.TryJumpUpThenForward(jumpHeight))
         {
             _globalState.DecreasePower(jumpUpEnergyCost);
+            AudioController.PlaySFX(jumpUpSfx);
         }
-
     }
 
     public void TryJumpForward()
@@ -101,8 +145,8 @@ public class PlayerController : MonoBehaviour
         if (_mover.TryJumpForward(jumpDistance))
         {
             _globalState.DecreasePower(longJumpEnergyCost);
+            AudioController.PlaySFX(longJumpSfx);
         }
-
     }
 
     public bool TryExplosion()
@@ -111,8 +155,11 @@ public class PlayerController : MonoBehaviour
         if (_mover.TryExplosion())
         {
             _globalState.DecreasePower(explosionEnergyCost);
+            AudioController.PlaySFX(explodeSfx);
+
             return true;
         }
+
         return false;
     }
 
@@ -122,9 +169,11 @@ public class PlayerController : MonoBehaviour
         if (_mover.TryZap())
         {
             _globalState.DecreasePower(zapEnergyCost);
+            AudioController.PlaySFX(zapSfx);
+
             return true;
         }
+
         return false;
     }
-
 }
