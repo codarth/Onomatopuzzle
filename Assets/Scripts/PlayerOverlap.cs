@@ -33,11 +33,13 @@ public class PlayerOverlap : MonoBehaviour
         if (tile == _winningTile)
         {
             //Debug.Log("Player overlapped the Winning Tile!");
+            AudioController.Instance.PlaySFX(PlayerController.Instance.gameWinSfx);
             LoadNextLevel();
         }
         else if (tile == _damageTile)
         {
             // Debug.Log("Player overlapped the Damage Tile!");
+            AudioController.Instance.PlaySFX(PlayerController.Instance.deathSfx);
             DamagePlayer();
         }
         else if (_glorpTile)
@@ -45,6 +47,7 @@ public class PlayerOverlap : MonoBehaviour
             if (tile == _glorpTile)
             {
                 Debug.Log("Player overlapped the Glorp Tile!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                AudioController.Instance.PlaySFX(PlayerController.Instance.glorpSfx);
                 _tilemap.SetTile(_tilemap.WorldToCell(transform.position), null);
             }
         }
